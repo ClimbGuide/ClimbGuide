@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-# Consider creating a custom user model from scratch as detailed at
-# https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#specifying-a-custom-user-model
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit, ResizeToFill
 
 
 class User(AbstractUser):
-    pass
+    photo = models.ImageField(upload_to="users/", null=True, blank=True)
+    photo_thumb = ImageSpecField(source="photo", processors=[ResizeToFill(200,200)], format="JPEG", options={"quality":80})
+    bio = models.CharField(max_length=200, null=True, blank=True)
