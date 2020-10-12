@@ -43,16 +43,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # Third-party
     'debug_toolbar',
     'django_extensions',
     'imagekit',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
 
     # Project-specific
     'users',
     'climbguide',
 ]
+
+SITE_ID = 1
+
+# Provider specific settings 
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+       'APP': {
+           'client_id' : env('GITHUB_CLIENT_ID'),
+           'secret' : env('GITHUB_SECRET'),
+       }
+   }
+}
+
+# Custom allauth forms
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.CustomSignUpForm',
+}
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -81,6 +103,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
@@ -128,6 +155,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+# User uploaded content
+MEDIA_ROOT = BASE_DIR / "media/"
+MEDIA_URL = "/media/"
 
 # Custom user model
 
