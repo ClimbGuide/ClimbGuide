@@ -3,13 +3,13 @@
 {% block content %}
 {% if user.is_authenticated %}
     <h2>{{ user }}</h2>
-    {% if user.photo is None %}
-        <div>No photo has been uploaded</div>
-    {% else %}
+    {% if user.photo %}
         <div><img src="{{ user.photo_thumb.url }}"/></div><br>
+    {% else %}
+        <div>No photo has been uploaded</div>
     {% endif %}
     <div>{{ user.bio }}</div>
-    <a class="link" href="{% url 'socialaccount_connections' %}">Manage Social Accounts</a>
+    <a href="{% url 'socialaccount_connections' %}">Manage Social Accounts</a>
     <div>
         <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}

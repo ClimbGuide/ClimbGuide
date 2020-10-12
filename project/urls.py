@@ -27,7 +27,7 @@ urlpatterns = [
     # user URLS
     path('accounts/profile/', user_views.profile, name="profile"),
     # climbguide URLS
-    path('', views.home, name='home.html'),
+    path('', views.home, name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
