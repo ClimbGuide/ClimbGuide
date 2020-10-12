@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet">
-    <title>ClimbGuide</title>
+    <title>{% block title %}ClimbGuide{% endblock %}</title>
 
 </head>
     <body>
         <H1>ClimbGuide</H1>
-</body>
+        {% block content %}
+        {% endblock %}
+    </body>
 </html>
