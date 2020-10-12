@@ -16,10 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
+from django.conf.urls.static import static
+
+from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path("accounts/", include("allauth.urls")),
+    # User URLS
+    path('accounts/profile/', user_views.profile, name="profile"),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
