@@ -5,10 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet">
     <title>{% block title %}ClimbGuide{% endblock %}</title>
-
 </head>
-    <body>
+    <header>
         <H1>ClimbGuide</H1>
+        {% block navbar %}
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'account_logout' %}">Logout</a>
+            {% else %}
+            <a href="{% url 'account_login' %}">Login</a>
+            {% endif %}
+        </nav>
+        {% endblock %}
+    </header>
+    <body>
         {% block content %}
         {% endblock %}
     </body>

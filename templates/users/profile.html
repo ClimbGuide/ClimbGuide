@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h2>{{ user }}</h2>
+    {% if user.photo %}
+        <div><img src="{{ user.photo_thumb.url }}"/></div><br>
+    {% else %}
+        <div>No photo has been uploaded</div>
+    {% endif %}
+    <div>{{ user.bio }}</div>
+    <a href="{% url 'socialaccount_connections' %}">Manage Social Accounts</a>
+    <div>
+        <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'account_login' %}">Login Here</a>
+{% endif %}
+{% endblock %}
