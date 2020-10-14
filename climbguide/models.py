@@ -9,7 +9,7 @@ class Route(models.Model):
     route_type = models.CharField(max_length=100, null=True, blank=True)
     rating = models.CharField(max_length=100, null=True, blank=True)
     mp_stars = models.IntegerField()
-    pitches = models.IntegerField()
+    pitches = models.CharField(max_length=100, null=True, blank=True)
     location = models.TextField(null=True, blank=True)
     longitude = models.IntegerField()
     latitude = models.IntegerField()
