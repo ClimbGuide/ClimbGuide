@@ -5,3 +5,11 @@ def home(request):
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
     return render(request, "home.html",
     {'mapbox_access_token': mapbox_access_token })
+
+def search(request):
+    query = request.GET.get('q', '')
+    if query is not None:
+        routes = routes.annotate(
+            search=SearchVector("name", "location")
+        )
+        return render(request, 'home.html', {"routes": routes})
