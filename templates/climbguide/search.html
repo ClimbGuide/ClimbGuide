@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Search Routes</h2>
+    <form class="form-style" action="{% url 'search' %}" method="GET">
+        <input type="search" name="q" placeholder="Search" value="{{query}}">
+        <p>
+            <button type="submit">Search</button>
+        </p>
+    </form>
+
+
+
+<h3>Routes</h3>
+<div>
+    {% if routes is not None %}
+    {% for route in routes %}
+    <div>
+        <a href="{% url 'route_detail' route.pk %}">{{ route.name }}</a>
+    </div><br>
+    {% empty %}
+        <p>There are no routes matching your search</p>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock %}

@@ -28,6 +28,9 @@ urlpatterns = [
     path('accounts/profile/', user_views.profile, name="profile"),
     # climbguide URLS
     path('', views.home, name='home'),
+    path('search/', views.search, name="search"),
+    path('routes/detail/<int:route_pk>', views.route_detail, name="route_detail"),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

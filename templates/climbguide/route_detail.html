@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ route.name }}</h2>
+<div>
+    {{ route.route_type }} | {{ route.rating }}<br>
+    {% if pitches == True %}
+    {{ route.pitches }} pitches<br>
+    {% endif %}
+    {{ route.location }}
+</div>
+{% endblock %}
