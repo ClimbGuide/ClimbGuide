@@ -14,6 +14,7 @@ class Route(models.Model):
     longitude = models.FloatField(null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateField(auto_now=True)
 
 
 class Daytrip(models.Model):
@@ -21,6 +22,7 @@ class Daytrip(models.Model):
     description = models.CharField(max_length=200, null=True, blank=True)
     owners = models.ManyToManyField(to=User, related_name="daytrips", blank=True)
     routes = models.ManyToManyField(to=Route, related_name="daytrips", blank=True)
+    date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     date_added = models.DateField(auto_now_add=True)
     date_updated = models.DateField(auto_now=True)
 
@@ -42,4 +44,14 @@ class Star(models.Model):
     stars = models.IntegerField()
     route = models.ForeignKey(to=Route, on_delete=models.CASCADE, related_name="stars", null=True, blank=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="stars", null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+
+class Photo(models.Model):
+    photo = models.ImageField(upload_to="routephotos/", null=True, blank=True)
+    photo_thumb = ImageSpecField(source="photo", processors=[ResizeToFill(200,200)], format="JPEG", options={"quality": 80})
+    photo_large = ImageSpecField(source="photo", processors=[ResizeToFit(400,400)], format="JPEG", options={"quality": 80})
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
+    route = models.ForeignKey(to=Route, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
+    description = models.CharField(max_length=200, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
