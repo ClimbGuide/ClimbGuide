@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="US-en">
 <head>
@@ -6,7 +8,8 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.min.js'></script>
-    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' type='text/css' />
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' type='text/css'/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
     <title>{% block title %}ClimbGuide{% endblock %}</title>
 </head>
     <header>
@@ -28,5 +31,6 @@
     <body>
         {% block content %}
         {% endblock %}
+        <script src="{% static 'js/script.js' %}"></script>
     </body>
 </html>
