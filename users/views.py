@@ -5,12 +5,14 @@ from django.contrib.auth.decorators import login_required
 #Project File Imports
 from .models import User
 from .forms import UpdateUserForm
+from climbguide.forms import DaytripForm
 
 
 # Views
 @login_required
 def profile(request):
     user = request.user
+    daytrips = user.daytrips.all()
     if request.method == "GET":
         form = UpdateUserForm(instance=user)
     else:
@@ -20,5 +22,7 @@ def profile(request):
             return redirect("profile")
     return render(request, "users/profile.html", {
         "user": user,
-        "form": form
+        "daytrips": daytrips,
+        "form": form,
+        "DaytripForm": DaytripForm
     })

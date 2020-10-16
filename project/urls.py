@@ -29,7 +29,13 @@ urlpatterns = [
     # climbguide URLS
     path('', views.home, name='home'),
     path('search/', views.search, name="search"),
+        # routes
     path('routes/detail/<int:route_pk>', views.route_detail, name="route_detail"),
+        # daytrip
+    path('daytrips/add', views.add_daytrip, name="add_daytrip"),
+    path('daytrips/detail/<int:daytrip_pk>', views.daytrip_detail, name="daytrip_detail"),
+    path('daytrips/edit/<int:daytrip_pk>', views.edit_daytrip, name="edit_daytrip"),
+    path('daytrips/delete/<int:daytrip_pk>', views.delete_daytrip, name="delete_daytrip"),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

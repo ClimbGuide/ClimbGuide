@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Edit Trip</h2>
+<div>
+    <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit">Update Trip</button>
+           <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
+        </div>
+    </form>
+</div>
+{% endblock %}
