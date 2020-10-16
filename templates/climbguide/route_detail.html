@@ -2,11 +2,26 @@
 
 {% block content %}
 <h2>{{ route.name }}</h2>
+{% for photo in photos %}
+<img src="{{ photo.photo_thumb.url }}"/>
+{% empty %}
+<div>This route has no photos</div><br>
+{% endfor %}
 <div>
     {{ route.route_type }} | {{ route.rating }}<br>
     {% if pitches == True %}
     {{ route.pitches }} pitches<br>
     {% endif %}
     {{ route.location }}
+</div><br>
+<button id="add-routephoto-button">Sumbit Photo</button>
+<div id="add-routephoto-form" class="hidden">
+    <form action="{% url 'addphoto_to_route' route_pk=route.pk %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ PhotoForm.as_p }}
+        <div>
+            <button type="submit">Submit Photo</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
