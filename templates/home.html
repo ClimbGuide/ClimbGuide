@@ -13,8 +13,34 @@
         accessToken: mapboxgl.accessToken, // Set the access token
         mapboxgl: mapboxgl, // Set the mapbox-gl instance
         marker: false, // Do not use the default marker style
-        });
+        placeholder: 'Search Routes to climb',
+        bbox: [-122.30937, 37.84214, -122.23715, 37.89838], // Boundary for North Carolina
+    });
         map.addControl(geocoder);
+        for (let i = 0; i < info.length; i++) {
+        let route = info[i]
+        var html = `<div style="border-radius: 3px; width: 200px;">
+                <h6 style="border-radius: 2px;">${route.name}</h6>
+                <p>${route.location}></p>
+                <a href="${route.pk}" class="marker-popup">Add Route to your trip!</a> 
+                <p>${route.route_type}</p>
+                </div>`
+
+        var customPopUp = new mapboxgl.Popup(
+                {
+                anchor: 'bottom',   // To show popup on top
+                offset: { 'bottom': [0, -10] },  // To prevent popup from over shadowing the marker.
+                closeOnClick: false   // To prevent close on mapClick.
+                }
+            ).setHTML(html); // You can set any valid HTML.
+            var marker = new mapboxgl.Marker(
+                { color: color}
+            )
+                .setLngLat([route.longitude, route.latitude])
+                .setPopup(customPopUp)
+                .addTo(map);
+            map.addControl(geocoder);
+        }
     </script>
 </body>
 {% endblock %}
