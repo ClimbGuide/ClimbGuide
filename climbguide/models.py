@@ -15,7 +15,7 @@ class Route(models.Model):
     latitude = models.FloatField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateField(auto_now=True)
-
+    
 
 class Daytrip(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
@@ -38,6 +38,7 @@ class Comment(models.Model):
     text = models.TextField(null=False, blank=False)
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="comments", null=True, blank=True)
     route = models.ForeignKey(to=Route, on_delete=models.CASCADE, related_name="comments", null=True, blank=True)
+    point_of_interest = models.ForeignKey(to=Pointofinterest, on_delete=models.CASCADE, related_name="comments", null=True, blank=True)
 
 
 class Star(models.Model):
@@ -55,3 +56,25 @@ class Photo(models.Model):
     route = models.ForeignKey(to=Route, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
+
+class Pointofinterest(models.Model):
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="pointsofinterest", null=True, blank=True)
+    title = models.CharField(max_length=100, null=False, blank=False)
+    description = models.CharField(max_length=200, null=True, blank=True)
+    longitude = models.FloatField(null=False, blank=False)
+    latitude = models.FloatField(null=False, blank=False)
+    date_added = models.DateField(auto_now_add=True)
+    date_updated = models.DateField(auto_now=True)
+    public = models.BooleanField(default=True)
+    HANGOUT = "HG"
+    PARKING = "PG"
+    TRAILHEAD = "TH"
+    CATEGORY_CHOICES = [
+        (HANGOUT, "Hangout Spot"),
+        (PARKING, "Parking"),
+        (TRAILHEAD, "Trailhead"),
+    ]
+    category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=HANGOUT)
+
+
