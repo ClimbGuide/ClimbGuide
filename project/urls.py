@@ -31,6 +31,7 @@ urlpatterns = [
     path('search/', views.search, name="search"),
         # routes
     path('routes/detail/<int:route_pk>', views.route_detail, name="route_detail"),
+    path('routes/detail/<int:route_pk>/addphoto/', views.addphoto_to_route, name="addphoto_to_route"),
         # daytrip
     path('daytrips/add', views.add_daytrip, name="add_daytrip"),
     path('daytrips/detail/<int:daytrip_pk>', views.daytrip_detail, name="daytrip_detail"),
