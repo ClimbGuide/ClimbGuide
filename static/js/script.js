@@ -20,6 +20,13 @@ function showAddDayTripForm () {
     addDayTripButton.classList.add("hidden")
 }
 
+function showAddRoutePhotoForm () {
+    let addRoutePhotoForm = document.querySelector("#add-routephoto-form")
+    let addRoutePhotoButton = document.querySelector("#add-routephoto-button")
+    addRoutePhotoForm.classList.remove("hidden")
+    addRoutePhotoButton.classList.add("hidden")
+}
+
 // Event Listeners
 let editDayTrip = document.querySelector("#edit-daytrip-button")
 if (editDayTrip) {
@@ -34,4 +41,9 @@ if (editUser) {
 let addDayTrip = document.querySelector("#add-daytrip-button")
 if (addDayTrip) {
     addDayTrip.addEventListener("click", showAddDayTripForm)
+}
+
+let addRoutePhoto = document.querySelector("#add-routephoto-button")
+if (addRoutePhoto) {
+    addRoutePhoto.addEventListener("click", showAddRoutePhotoForm)
 }
