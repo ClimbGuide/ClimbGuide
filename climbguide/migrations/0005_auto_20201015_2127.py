@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(blank=True, max_length=200, null=True)),
                 ('date_added', models.DateTimeField(auto_now_add=True)),
                 ('owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='photos', to=settings.AUTH_USER_MODEL)),
-                ('route', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='photos', to='climbguide.route')),
+                ('route', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='photos', to='climbguide.route')), 
             ],
         ),
     ]
