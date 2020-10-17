@@ -54,6 +54,7 @@ class Photo(models.Model):
     photo_large = ImageSpecField(source="photo", processors=[ResizeToFit(400,400)], format="JPEG", options={"quality": 80})
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
     route = models.ForeignKey(to=Route, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
+    point_of_interest = models.ForeignKey(to=Pointofinterest, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
@@ -70,10 +71,12 @@ class Pointofinterest(models.Model):
     HANGOUT = "HG"
     PARKING = "PG"
     TRAILHEAD = "TH"
+    VIEWPOINT = "VP"
     CATEGORY_CHOICES = [
         (HANGOUT, "Hangout Spot"),
         (PARKING, "Parking"),
         (TRAILHEAD, "Trailhead"),
+        (VIEWPOINT, "Viewpoint"),
     ]
     category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=HANGOUT)
 
