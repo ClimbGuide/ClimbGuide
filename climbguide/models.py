@@ -44,6 +44,7 @@ class Daytrip(models.Model):
     description = models.CharField(max_length=200, null=True, blank=True)
     owners = models.ManyToManyField(to=User, related_name="daytrips", blank=True)
     routes = models.ManyToManyField(to=Route, related_name="daytrips", blank=True)
+    points_of_interest = models.ManyToManyField(to=Pointofinterest, related_name="daytrips", blank=True)
     date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     date_added = models.DateField(auto_now_add=True)
     date_updated = models.DateField(auto_now=True)
