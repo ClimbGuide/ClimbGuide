@@ -7,10 +7,10 @@
     {{ daytrip.description }}<br>
 </div><br>
 <div>
-    <button id="edit-daytrip-button">Edit Trip</button>
+    <button id="button-one">Edit Trip</button>
     <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
 </div>
-<div id="daytrip-form" class="hidden">
+<div id="form-one" class="hidden">
     <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
         {% csrf_token %}
         {{ DaytripForm.as_p }}

@@ -11,21 +11,31 @@
     <div>{{ user.bio }}</div>
     <div>
         <a href="{% url 'socialaccount_connections' %}"><button>Manage Social Accounts</button></a>
-        <button id="edit-user-button">Edit User Info</button>
-        <button id="add-daytrip-button">Add Trip</button>
+        <button id="button-one">Edit User Info</button>
     </div>
-    <div id="user-form" class="hidden">
+    <div>
+        <button id="button-two">Add Trip</button>
+        <button id="button-three">Add Point of Interest</button>
+    </div>
+    <div id="form-one" class="hidden">
         <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Update Profile</button>
         </form>
     </div>
-    <div id="add-daytrip-form" class="hidden">
+    <div id="form-two" class="hidden">
         <form action ="{% url 'add_daytrip' %}" method="POST">
             {% csrf_token %}
             {{ DaytripForm.as_p }}
             <button type="submit">Add Trip</button>
+        </form>
+    </div>
+    <div id="form-three" class="hidden">
+        <form action ="{% url 'add_pointofinterest' %}" method="POST">
+            {% csrf_token %}
+            {{ PointofinterestForm.as_p }}
+            <button type="submit">Add Point of Interest</button>
         </form>
     </div>
     <h3> My Trips</h3>
