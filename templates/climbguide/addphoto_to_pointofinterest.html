@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Sumbit photo to the point of interest</h2>
+<div>
+    <form action="{% url 'addphoto_to_pointofinterest' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit">Submit Photo</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
