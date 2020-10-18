@@ -5,7 +5,7 @@ from django.contrib.postgres.search import SearchVector
 
 # Project Files Imports 
 from .models import Route, Daytrip
-from .forms import DaytripForm
+from .forms import DaytripForm, PhotoForm
 
 # Views
 def home(request):
@@ -33,13 +33,16 @@ def search(request):
 
 def route_detail(request, route_pk):
     route = get_object_or_404(Route, pk=route_pk)
+    photos = route.photos.all()
     if route.pitches == '':
         pitches = False
     else:
         pitches = True
     return render(request, "climbguide/route_detail.html", {
         "route": route,
-        "pitches": pitches
+        "photos": photos,
+        "pitches": pitches,
+        "PhotoForm": PhotoForm
     })
 
 
@@ -101,5 +104,23 @@ def edit_daytrip(request, daytrip_pk):
             return redirect("daytrip_detail", daytrip_pk=daytrip.pk)
     return render(request, "climbguide/edit_daytrip.html", {
         "daytrip": daytrip,
+        "form": form
+    })
+
+
+@login_required
+def addphoto_to_route(request, route_pk):
+    if request.method == "GET":
+        form = PhotoForm()
+    else:
+        form = PhotoForm(request.POST, files=request.FILES)
+        route = get_object_or_404(Route, pk=route_pk)
+        if form.is_valid:
+            photo = form.save(commit=False)
+            photo.owner = request.user
+            photo.route = route
+            photo.save()
+            return redirect("route_detail", route_pk=route.pk)
+    return render(request, "climbguide/addphoto_to_route.html", {
         "form": form
     })

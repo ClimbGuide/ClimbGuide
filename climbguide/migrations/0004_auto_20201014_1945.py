@@ -42,15 +42,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='route',
-            name='latitude',
-            field=models.FloatField(blank=True, null=True),
-        ),
-        migrations.AlterField(
-            model_name='route',
-            name='longitude',
-            field=models.FloatField(blank=True, null=True),
-        ),
         migrations.RunPython(get_routes),
     ]
