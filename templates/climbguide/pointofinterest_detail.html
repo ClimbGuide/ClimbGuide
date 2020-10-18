@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ pointofinterest.name }}</h2>
+{% for photo in photos %}
+<img src="{{ photo.photo_thumb.url }}"/>
+{% empty %}
+<div>This point of interest has no photos yet. Add some!</div><br>
+{% endfor %}
+<div>
+    {{ pointofinterest.category }}<br>
+    {{ pointofinterest.description }}
+</div><br>
+
+{% endblock %}

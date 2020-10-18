@@ -20,7 +20,7 @@ class Route(models.Model):
 class Pointofinterest(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="pointsofinterest", null=True, blank=True)
     name = models.CharField(max_length=100, null=False, blank=False)
-    description = models.CharField(max_length=200, null=True, blank=True)
+    information = models.CharField(max_length=250, null=True, blank=True)
     longitude = models.FloatField(null=False, blank=False)
     latitude = models.FloatField(null=False, blank=False)
     date_added = models.DateField(auto_now_add=True)
