@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Sumbit photo to the route</h2>
 <div>
-    <form action="{% url 'addphoto_to_route' route_pk=route_pk %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'addphoto_to_route' route_pk=route.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
