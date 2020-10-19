@@ -1,5 +1,5 @@
 from django import forms
-from .models import Daytrip, Photo
+from .models import Daytrip, Photo, Pointofinterest
 
 class DaytripForm(forms.ModelForm):
     class Meta:
@@ -21,4 +21,17 @@ class PhotoForm(forms.ModelForm):
         fields = [
             "photo",
             "description"
+        ]
+
+
+class PointofinterestForm(forms.ModelForm):
+    class Meta:
+        model = Pointofinterest
+        fields = [
+            "name",
+            "information",
+            "longitude",
+            "latitude",
+            "public",
+            "category"
         ]

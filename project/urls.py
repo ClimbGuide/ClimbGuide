@@ -33,10 +33,17 @@ urlpatterns = [
     path('routes/detail/<int:route_pk>', views.route_detail, name="route_detail"),
     path('routes/detail/<int:route_pk>/addphoto/', views.addphoto_to_route, name="addphoto_to_route"),
         # daytrip
-    path('daytrips/add', views.add_daytrip, name="add_daytrip"),
+    path('daytrips/add/', views.add_daytrip, name="add_daytrip"),
     path('daytrips/detail/<int:daytrip_pk>', views.daytrip_detail, name="daytrip_detail"),
     path('daytrips/edit/<int:daytrip_pk>', views.edit_daytrip, name="edit_daytrip"),
     path('daytrips/delete/<int:daytrip_pk>', views.delete_daytrip, name="delete_daytrip"),
+        # pointofinterest
+    path('pointsofinterest/add/', views.add_pointofinterest, name="add_pointofinterest"),
+    path('pointsofinterest/detail/<int:pointofinterest_pk>', views.pointofinterest_detail, name="pointofinterest_detail"),
+    path('pointsofinterest/edit/<int:pointofinterest_pk>', views.edit_pointofinterest, name="edit_pointofinterest"),
+    path('pointsofinterest/delete/<int:pointofinterest_pk>', views.delete_pointofinterest, name="delete_pointofinterest"),
+    path('pointsofinterest/detail/<int:pointofinterest_pk>/addphoto/', views.addphoto_to_pointofinterest, name="addphoto_to_pointofinterest"),
+
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

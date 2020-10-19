@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Update point of interest</h2>
+<div>
+    <form action="{% url 'edit_pointofinterest' pointofinterest_pk=pointofinterest.pk %}"method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit">Update Point of Interest</button>
+           <a href="{% url 'pointofinterest_detail' pointofinterest_pk=pointofinterest.pk %}"><button>Cancel Update</button></a> 
+        </div>
+    </form>
+</div>
+{% endblock %}

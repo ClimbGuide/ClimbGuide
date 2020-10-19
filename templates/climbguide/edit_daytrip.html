@@ -11,5 +11,28 @@
            <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
         </div>
     </form>
+</div><br>
+<div>We will use mapbox to do these things below:</div>
+<div>1) Show all routes on mapbox</div>
+<div>2) Show all POI on mapbox</div>
+<div>2) When you click on a route or POI, you get a pop up with an option to add it to the trip</div>
+<div>3) Use JS to append route or POI to the appropriate planned list when added</div>
+<div>4) Use dragula or sortable JS to order the list</div>
+<div>5) On sumbit, send the planned list as an ordered list (array) to backend to be added</div><br>
+<div>
+    <div id='map' style='width: 400px; height: 300px;'></div>
+    <script>
+        mapboxgl.accessToken = '{{mapbox_access_token}}';
+        var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11'
+        });
+        var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+        accessToken: mapboxgl.accessToken, // Set the access token
+        mapboxgl: mapboxgl, // Set the mapbox-gl instance
+        marker: false, // Do not use the default marker style
+        });
+        map.addControl(geocoder);
+    </script>
 </div>
 {% endblock %}
