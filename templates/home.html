@@ -7,15 +7,39 @@
         mapboxgl.accessToken = '{{mapbox_access_token}}';
         var map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [35.120196, -78.223586],
+        style: 'mapbox://styles/belongarobert/ckgfpl6a014c219pczdey8wca',
+        center: [-80.793457, 35.782169],
+        zoom: 4,
     });
-        var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+    var map = L.mapbox.map('map')
+    .setView([40, -95], 4)
+    .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v11'));
+
+var RADIUS = 500000;
+var filterCircle = L.circle(L.latLng(40, -75), RADIUS, {
+    opacity: 1,
+    weight: 1,
+    fillOpacity: 0.4
+}).addTo(map);
+
+var csvLayer = climbguide_route.csv('static/assets/climbguide_route.csv', null, L.mapbox.featureLayer())
+    .addTo(map);
+
+map.on('mouseover', function(e) {
+    filterCircle.setLatLng(e.latlng);
+    csvLayer.setFilter(function showRoutes(feature) {
+        return e.latlng.distanceTo(L.latLng(
+                feature.geometry.coordinates[1],
+                feature.geometry.coordinates[0])) < RADIUS;
+    });
+});
+</script>
+        <!-- var geocoder = new MapboxGeocoder({ // Initialize the geocoder
         accessToken: mapboxgl.accessToken, // Set the access token
         mapboxgl: mapboxgl, // Set the mapbox-gl instance
         marker: false, // Do not use the default marker style
         placeholder: 'Search Routes to climb',
-        bbox: [-122.30937, 37.84214, -122.23715, 37.89838], // Boundary for North Carolina
+        // bbox: [-122.30937, 37.84214, -122.23715, 37.89838], // Boundary for North Carolina
     });
         map.addControl(geocoder);
         for (let i = 0; i < info.length; i++) {
@@ -40,8 +64,25 @@
                 .setLngLat([route.longitude, route.latitude])
                 .setPopup(customPopUp)
                 .addTo(map);
-            map.addControl(geocoder);
-        }
+            
+                map.addControl(geocoder);
+            }
+            map.on('load', function() {
+            map.addSource('single-point', {
+            type: 'geojson',
+            data: {
+            type: 'FeatureCollection',
+            features: []
+            }
+    });
+
+            // Listen for the `result` event from the Geocoder
+            // `result` event is triggered when a user makes a selection
+            //  Add a marker at the result's coordinates
+            geocoder.on('result', function(e) {
+            map.getSource('single-point').setData(e.result.geometry);
+    });
+    }); -->
     </script>
 </body>
 {% endblock %}
