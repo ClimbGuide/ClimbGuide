@@ -9,11 +9,21 @@ from .forms import DaytripForm, PhotoForm, PointofinterestForm
 
 # Views
 def home(request):
+    route_info = []
     routes = Route.objects.all()
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    for route in routes:
+        route_info.append({
+            "name": route.name,
+            "pk": route.pk,
+            "longitude": route.longitude,
+            "latitude": route.latitude,
+            "route_type": route.route_type,
+            "rating": route.rating,
+        })
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
-        "routes": routes
+        "route_info": route_info
     })
 
 
@@ -85,15 +95,24 @@ def add_daytrip(request):
 @login_required
 def daytrip_detail(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+    route_info = []
     routes = daytrip.routes.all()
     owners = daytrip.owners.all()
     pointsofinterest = daytrip.points_of_interest.all()
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    for route in routes:
+        route_info.append({
+            "name": route.name,
+            "pk": route.pk,
+            "longitude": route.longitude,
+            "latitude": route.latitude,
+            "route_type": route.route_type,
+            "rating": route.rating,
+        })
     return render(request, "climbguide/daytrip_detail.html", {
         "daytrip": daytrip,
-        "routes": routes,
         "owners": owners,
-        "pointsofinterest": pointsofinterest,
+        "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
 
@@ -119,6 +138,16 @@ def edit_daytrip(request, daytrip_pk):
     planned_routes = daytrip.routes.all()
     pointsofinterest = Pointofinterest.objects.all()
     planned_pointofinterest = daytrip.points_of_interest.all()
+    route_info = []
+    for route in routes:
+        route_info.append({
+            "name": route.name,
+            "pk": route.pk,
+            "longitude": route.longitude,
+            "latitude": route.latitude,
+            "route_type": route.route_type,
+            "rating": route.rating,
+        })
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
     if request.method == "GET":
         form = DaytripForm(instance=daytrip)
@@ -134,6 +163,7 @@ def edit_daytrip(request, daytrip_pk):
         "planned_routes": planned_routes,
         "pointsofinterest": pointsofinterest,
         "planned_pointofinterest": planned_pointofinterest,
+        "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
 
