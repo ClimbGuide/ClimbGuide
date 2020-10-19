@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 #Project File Imports
 from .models import User
 from .forms import UpdateUserForm
-from climbguide.forms import DaytripForm
+from climbguide.forms import DaytripForm, PointofinterestForm
 
 
 # Views
@@ -24,5 +24,6 @@ def profile(request):
         "user": user,
         "daytrips": daytrips,
         "form": form,
-        "DaytripForm": DaytripForm
+        "DaytripForm": DaytripForm,
+        "PointofinterestForm": PointofinterestForm
     })

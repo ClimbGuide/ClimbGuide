@@ -7,25 +7,13 @@
     {{ daytrip.description }}<br>
 </div><br>
 <div>
-    <button id="edit-daytrip-button">Edit Trip</button>
+    <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk%}"><button>Update Trip</button></a>
     <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
-</div>
-<div id="daytrip-form" class="hidden">
-    <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
-        {% csrf_token %}
-        {{ DaytripForm.as_p }}
-        <div>
-            <button type="submit">Update Trip</button>
-           <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
-        </div>
-    </form>
 </div><br>
-<div>Here is what we will use mapbox to do these things below:</div>
-<div>1) Show all routes on mapbox</div>
-<div>2) When you click on a route, you get the pop up with option to add route to trip</div>
-<div>3) Use JS to append route to planned_routes list when added</div>
-<div>4) Use dragula or sortable JS to order the list</div>
-<div>5) On sumbit, send the order list (array) to backend to be added</div><br>
+<div>We will use mapbox to do these things below:</div>
+<div>1) Show all routes on mapbox, the routes queried for this view are have been added to the trip</div>
+<div>2) When you click on a route, you get the pop up with option inspect the route further, like the homepage</div>
+<div>3) Show pointsofinterest</div><br>
 <div>
     <div id='map' style='width: 400px; height: 300px;'></div>
     <script>
