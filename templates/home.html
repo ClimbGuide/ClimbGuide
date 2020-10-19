@@ -4,85 +4,105 @@
 <body>
     <div id='map' style='width: 400px; height: 300px;'></div>
     <script>
+        // const info = JSON.parse(document.getElementById('info').textContent)
+        // var map = null
         mapboxgl.accessToken = '{{mapbox_access_token}}';
         var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/belongarobert/ckgfpl6a014c219pczdey8wca',
         center: [-80.793457, 35.782169],
         zoom: 4,
-    });
-    var map = L.mapbox.map('map')
-    .setView([40, -95], 4)
-    .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v11'));
-
-var RADIUS = 500000;
-var filterCircle = L.circle(L.latLng(40, -75), RADIUS, {
-    opacity: 1,
-    weight: 1,
-    fillOpacity: 0.4
-}).addTo(map);
-
-var csvLayer = climbguide_route.csv('static/assets/climbguide_route.csv', null, L.mapbox.featureLayer())
-    .addTo(map);
-
-map.on('mouseover', function(e) {
-    filterCircle.setLatLng(e.latlng);
-    csvLayer.setFilter(function showRoutes(feature) {
-        return e.latlng.distanceTo(L.latLng(
-                feature.geometry.coordinates[1],
-                feature.geometry.coordinates[0])) < RADIUS;
-    });
-});
-</script>
-        <!-- var geocoder = new MapboxGeocoder({ // Initialize the geocoder
+    })
+        var geocoder = new MapboxGeocoder({ // Initialize the geocoder
         accessToken: mapboxgl.accessToken, // Set the access token
         mapboxgl: mapboxgl, // Set the mapbox-gl instance
         marker: false, // Do not use the default marker style
         placeholder: 'Search Routes to climb',
         // bbox: [-122.30937, 37.84214, -122.23715, 37.89838], // Boundary for North Carolina
     });
-        map.addControl(geocoder);
-        for (let i = 0; i < info.length; i++) {
-        let route = info[i]
-        var html = `<div style="border-radius: 3px; width: 200px;">
-                <h6 style="border-radius: 2px;">${route.name}</h6>
-                <p>${route.location}></p>
-                <a href="${route.pk}" class="marker-popup">Add Route to your trip!</a> 
-                <p>${route.route_type}</p>
-                </div>`
-
-        var customPopUp = new mapboxgl.Popup(
-                {
-                anchor: 'bottom',   // To show popup on top
-                offset: { 'bottom': [0, -10] },  // To prevent popup from over shadowing the marker.
-                closeOnClick: false   // To prevent close on mapClick.
+        // var html = `<div style="border-radius: 3px; width: 200px;">
+        //         <h6 style="border-radius: 2px;">${route.name}</h6>
+        //         <p>${route.location}></p>
+        //         <a href="${route.pk}" class="marker-popup">Add Route to your trip!</a> 
+        //         <p>${route.route_type}</p>
+        //         </div>`
+        map.addLayer({
+              'id': 'symbols',
+              'type': 'route',
+              'source': 'points',
+              'layout': {
+                'icon-image': 'custom-marker',
+                'icon-allow-overlap': true
+              }
+              });
+        map.on('mouseenter','symbols', function(e) {
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = 'pointer';
+                
+                var coordinates = e.features[0].geometry.coordinates.slice();
+                var description = e.features[0].properties.description;
+                
+                // Ensure that if the map is zoomed out such that multiple
+                // copies of the feature are visible, the popup appears
+                // over the copy being pointed to.
+                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                 }
-            ).setHTML(html); // You can set any valid HTML.
-            var marker = new mapboxgl.Marker(
-                { color: color}
-            )
-                .setLngLat([route.longitude, route.latitude])
-                .setPopup(customPopUp)
+                
+                // Populate the popup and set its coordinates
+                // based on the feature found.
+                popup
+                .setLngLat(coordinates)
+                .setHTML(description)
                 .addTo(map);
+                });
+                map.on('mouseleave','symbols', function() {
+                  map.getCanvas().style.cursor = '';
+                  popup.remove();
+                  });
+              
+            
+              var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+              });
+              
             
                 map.addControl(geocoder);
-            }
+
             map.on('load', function() {
             map.addSource('single-point', {
             type: 'geojson',
             data: {
             type: 'FeatureCollection',
-            features: []
+            features: [
+              {% for route in routes.all %}
+              {
+              'type': 'Feature',
+              'properties': {
+                'description':
+                    '<strong><a href="{% url 'route_detail' route_pk=route.pk %}" target="_blank" title="Opens in a new window">{{route.name}}</a></strong><p> {{route.location}} {{route.type}}</p><p><b>Click on the farm in the list to learn more!<b></p>',
+                'icon': 'theatre'
+              },
+              'geometry': {
+              'type': 'Point',
+              'coordinates': [
+              {{route.longitude}},
+              {{route.latitude}},
+              ]
+              }
+              },{% endfor %}]
             }
     });
-
+            
+        
             // Listen for the `result` event from the Geocoder
             // `result` event is triggered when a user makes a selection
             //  Add a marker at the result's coordinates
             geocoder.on('result', function(e) {
             map.getSource('single-point').setData(e.result.geometry);
     });
-    }); -->
+    });
     </script>
 </body>
 {% endblock %}

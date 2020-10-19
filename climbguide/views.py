@@ -14,6 +14,7 @@ def home(request):
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
         "routes": routes
+        
     })
 
 
