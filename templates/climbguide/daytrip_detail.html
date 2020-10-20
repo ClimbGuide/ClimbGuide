@@ -10,24 +10,77 @@
     <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk%}"><button>Update Trip</button></a>
     <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
 </div><br>
-<div>We will use mapbox to do these things below:</div>
-<div>1) Show all routes on mapbox, the routes queried for this view are have been added to the trip</div>
-<div>2) When you click on a route, you get the pop up with option inspect the route further, like the homepage</div>
-<div>3) Show pointsofinterest</div><br>
-<div>
-    <div id='map' style='width: 400px; height: 300px;'></div>
-    <script>
-        mapboxgl.accessToken = '{{mapbox_access_token}}';
-        var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11'
-        });
-        var geocoder = new MapboxGeocoder({ // Initialize the geocoder
-        accessToken: mapboxgl.accessToken, // Set the access token
-        mapboxgl: mapboxgl, // Set the mapbox-gl instance
-        marker: false, // Do not use the default marker style
-        });
-        map.addControl(geocoder);
-    </script>
-</div>
+
+<div id='map' style='width: 400px; height: 300px;'></div>
+
+{{ route_info|json_script:"route_info" }}
+
+{% block scripts %}
+<script>
+// Initalize bounding variables
+var minLongitude
+var minLatitude
+var maxLongitude
+var maxLatitude
+// Load map and set to variable map
+mapboxgl.accessToken = '{{mapbox_access_token}}';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-80.793457, 35.782169],
+    zoom: 4,
+})
+
+console.log("map loaded!")
+// Event starts as soon the page begins loading
+// Get data, load to map, set markers, and initalize bounding varibales
+document.addEventListener("DOMContentLoaded", (e) => {
+    const route_info = JSON.parse(document.getElementById("route_info").textContent)
+    var latitudeList = []
+    var longitudeList = []
+    for (let i = 0; i < route_info.length; i++) {
+        let route = route_info[i]
+        latitudeList.push(route.latitude)
+        longitudeList.push(route.longitude)
+        console.log(route.name)
+        var html =  `<div style="border-radius: 3px; width: 200px;">
+                        <h4 style="border-radius: 2px;">${route.name}</h4>
+                        <div>${route.route_type} | ${route.rating}</div>
+                        <a href="/routes/detail/${route.pk}" class="marker-popup">See the route!</a>
+                    </div>`
+        var customPopUp = new mapboxgl.Popup({
+            anchor: "bottom",
+            offset: { "bottom" : [0, -10]},
+            closeOnClick: false
+        }).setHTML(html);
+
+        let color = "green"
+        var marker = new mapboxgl.Marker(
+            {color: color}
+        )
+            .setLngLat([route.longitude, route.latitude])
+            .setPopup(customPopUp)
+            .addTo(map);
+    }
+    console.log(latitudeList)
+    console.log(longitudeList)
+    minLongitude = Math.min.apply(Math, longitudeList)
+    minLatitude = Math.min.apply(Math, latitudeList)
+    maxLongitude = Math.max.apply(Math, longitudeList)
+    maxLatitude = Math.max.apply(Math, latitudeList)
+    console.log(minLongitude)
+    console.log(minLatitude)
+    console.log(maxLongitude)
+    console.log(maxLatitude)
+})
+// Bound mapbox after page loads, based on queried data
+window.addEventListener('load', (e) => {
+        map.fitBounds([
+            [(minLongitude - 0.05), (minLatitude - 0.1)],
+            [(maxLongitude + 0.1), (maxLatitude + 0.1)]
+        ])
+        console.log("bounds updated!")
+    })
+</script>
+{% endblock scripts%}
 {% endblock %}

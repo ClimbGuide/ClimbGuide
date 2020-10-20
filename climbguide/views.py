@@ -9,11 +9,42 @@ from .forms import DaytripForm, PhotoForm, PointofinterestForm
 
 # Views
 def home(request):
-    routes = Route.objects.all()
+    route_info = []
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    location_query = request.GET.get("location","")
+    route_type_query = request.GET.get("routetype","")
+
+    if location_query and route_type_query:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_query).annotate(
+            search=SearchVector("route_type")
+        ).filter(search=route_type_query)
+    if location_query is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_query)
+    elif route_type_query is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("route_type")
+        ).filter(search=route_type_query)
+    else:
+        routes = None
+    
+    if routes is not None:
+        for route in routes:
+            route_info.append({
+                "name": route.name,
+                "pk": route.pk,
+                "longitude": route.longitude,
+                "latitude": route.latitude,
+                "route_type": route.route_type,
+                "rating": route.rating,
+            })
+
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
-        "routes": routes
+        "route_info": route_info
     })
 
 
@@ -76,7 +107,7 @@ def add_daytrip(request):
             daytrip = form.save()
             daytrip.owners.add(request.user)
             daytrip.save()
-            return redirect("daytrip_detail", daytrip_pk=daytrip.pk)
+            return redirect("edit_daytrip", daytrip_pk=daytrip.pk)
         return render(request, "climbguide/add_daytrip.html", {
             "form": form
         })
@@ -85,15 +116,24 @@ def add_daytrip(request):
 @login_required
 def daytrip_detail(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+    route_info = []
     routes = daytrip.routes.all()
     owners = daytrip.owners.all()
     pointsofinterest = daytrip.points_of_interest.all()
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    for route in routes:
+        route_info.append({
+            "name": route.name,
+            "pk": route.pk,
+            "longitude": route.longitude,
+            "latitude": route.latitude,
+            "route_type": route.route_type,
+            "rating": route.rating,
+        })
     return render(request, "climbguide/daytrip_detail.html", {
         "daytrip": daytrip,
-        "routes": routes,
         "owners": owners,
-        "pointsofinterest": pointsofinterest,
+        "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
 
@@ -115,11 +155,29 @@ def delete_daytrip(request, daytrip_pk):
 @login_required
 def edit_daytrip(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
-    routes = Route.objects.all()
+    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    routes = Route.objects.all()[:20]
     planned_routes = daytrip.routes.all()
     pointsofinterest = Pointofinterest.objects.all()
     planned_pointofinterest = daytrip.points_of_interest.all()
-    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    route_info = []
+    location_query = request.GET.get("location","")
+    if location_query is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_query)
+    else:
+        routes = None
+    if routes is not None:
+        for route in routes:
+            route_info.append({
+                "name": route.name,
+                "pk": route.pk,
+                "longitude": route.longitude,
+                "latitude": route.latitude,
+                "route_type": route.route_type,
+                "rating": route.rating,
+            })
     if request.method == "GET":
         form = DaytripForm(instance=daytrip)
     else:
@@ -134,6 +192,7 @@ def edit_daytrip(request, daytrip_pk):
         "planned_routes": planned_routes,
         "pointsofinterest": pointsofinterest,
         "planned_pointofinterest": planned_pointofinterest,
+        "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
 

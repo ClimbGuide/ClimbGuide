@@ -35,3 +35,5 @@ class PointofinterestForm(forms.ModelForm):
             "public",
             "category"
         ]
+
+
