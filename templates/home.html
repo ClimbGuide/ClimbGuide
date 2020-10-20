@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+<h2>Search Routes</h2>
+<form id="fit" action="{% url 'home' %}" method="GET">
+    <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
+    <input type="search" name="routetype" placeholder="Route Type" value="{{ route_type_query}}"/>
+    <p>
+        <button type="submit">Search</button>
+    </p>
+</form>
 <div id='map' style='width: 400px; height: 300px;'></div>
 
 {{ route_info|json_script:"route_info" }}
@@ -15,8 +23,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
         zoom: 4,
     })
     console.log("map loaded!")
+    var latitudeList = []
+    var longitudeList = []
     for (let i = 0; i < route_info.length; i++) {
         let route = route_info[i]
+        latitudeList.push(route.latitude)
+        longitudeList.push(route.longitude)
         console.log(route.name)
         var html =  `<div style="border-radius: 3px; width: 200px;">
                         <h4 style="border-radius: 2px;">${route.name}</h4>
@@ -37,6 +49,23 @@ document.addEventListener("DOMContentLoaded", (e) => {
             .setPopup(customPopUp)
             .addTo(map);
     }
+    console.log(latitudeList)
+    console.log(longitudeList)
+    var minLongitude = Math.min.apply(Math, longitudeList)
+    var minLatitude = Math.min.apply(Math, latitudeList)
+    var maxLongitude = Math.max.apply(Math, longitudeList)
+    var maxLatitude = Math.max.apply(Math, latitudeList)
+    console.log(minLongitude)
+    console.log(minLatitude)
+    console.log(maxLongitude)
+    console.log(maxLatitude)
+    document.getElementById('fit').addEventListener('submit',
+    function() {
+        map.fitBounds([
+            [minLongitude, minLatitude],
+            [maxLongitude, maxLatitude]
+        ])
+    })
 })
 </script>
 

@@ -10,17 +10,36 @@ from .forms import DaytripForm, PhotoForm, PointofinterestForm
 # Views
 def home(request):
     route_info = []
-    routes = Route.objects.all()
     mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
-    for route in routes:
-        route_info.append({
-            "name": route.name,
-            "pk": route.pk,
-            "longitude": route.longitude,
-            "latitude": route.latitude,
-            "route_type": route.route_type,
-            "rating": route.rating,
-        })
+    location_query = request.GET.get("location","")
+    route_type_query = request.GET.get("routetype","")
+
+    if location_query and route_type_query:
+        routes = Route.objects.annotate(
+            search=SearchVector("location", "route_type")
+        ).filter(search=(route_type_query, location_query))
+    if location_query is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_query)
+    elif route_type_query is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("route_type")
+        ).filter(search=route_type_query)
+    else:
+        routes = None
+    
+    if routes is not None:
+        for route in routes:
+            route_info.append({
+                "name": route.name,
+                "pk": route.pk,
+                "longitude": route.longitude,
+                "latitude": route.latitude,
+                "route_type": route.route_type,
+                "rating": route.rating,
+            })
+
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
         "route_info": route_info
@@ -86,7 +105,7 @@ def add_daytrip(request):
             daytrip = form.save()
             daytrip.owners.add(request.user)
             daytrip.save()
-            return redirect("daytrip_detail", daytrip_pk=daytrip.pk)
+            return redirect("edit_daytrip", daytrip_pk=daytrip.pk)
         return render(request, "climbguide/add_daytrip.html", {
             "form": form
         })
