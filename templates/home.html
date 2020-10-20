@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Search Routes</h2>
-<form id="fit" action="{% url 'home' %}" method="GET">
+<form action="{% url 'home' %}" method="GET">
     <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
     <input type="search" name="routetype" placeholder="Route Type" value="{{ route_type_query}}"/>
     <p>
@@ -12,17 +12,27 @@
 
 {{ route_info|json_script:"route_info" }}
 
+{% block scripts %}
 <script>
+// Initalize bounding variables
+var minLongitude
+var minLatitude
+var maxLongitude
+var maxLatitude
+// Load map and set to variable map
+mapboxgl.accessToken = '{{mapbox_access_token}}';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-80.793457, 35.782169],
+    zoom: 4,
+})
+
+console.log("map loaded!")
+// Event starts as soon the page begins loading
+// Get data, load to map, set markers, and initalize bounding varibales
 document.addEventListener("DOMContentLoaded", (e) => {
     const route_info = JSON.parse(document.getElementById("route_info").textContent)
-    mapboxgl.accessToken = '{{mapbox_access_token}}';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-80.793457, 35.782169],
-        zoom: 4,
-    })
-    console.log("map loaded!")
     var latitudeList = []
     var longitudeList = []
     for (let i = 0; i < route_info.length; i++) {
@@ -51,22 +61,23 @@ document.addEventListener("DOMContentLoaded", (e) => {
     }
     console.log(latitudeList)
     console.log(longitudeList)
-    var minLongitude = Math.min.apply(Math, longitudeList)
-    var minLatitude = Math.min.apply(Math, latitudeList)
-    var maxLongitude = Math.max.apply(Math, longitudeList)
-    var maxLatitude = Math.max.apply(Math, latitudeList)
+    minLongitude = Math.min.apply(Math, longitudeList)
+    minLatitude = Math.min.apply(Math, latitudeList)
+    maxLongitude = Math.max.apply(Math, longitudeList)
+    maxLatitude = Math.max.apply(Math, latitudeList)
     console.log(minLongitude)
     console.log(minLatitude)
     console.log(maxLongitude)
     console.log(maxLatitude)
-    document.getElementById('fit').addEventListener('submit',
-    function() {
-        map.fitBounds([
-            [minLongitude, minLatitude],
-            [maxLongitude, maxLatitude]
-        ])
-    })
 })
+// Bound mapbox after page loads, based on queried data
+window.addEventListener('load', (e) => {
+        map.fitBounds([
+            [(minLongitude - 0.05), (minLatitude - 0.1)],
+            [(maxLongitude + 0.1), (maxLatitude + 0.1)]
+        ])
+        console.log("bounds updated!")
+    })
 </script>
-
+{% endblock scripts %}
 {% endblock %}
