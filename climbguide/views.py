@@ -16,8 +16,10 @@ def home(request):
 
     if location_query and route_type_query:
         routes = Route.objects.annotate(
-            search=SearchVector("location", "route_type")
-        ).filter(search=(route_type_query, location_query))
+            search=SearchVector("location")
+        ).filter(search=location_query).annotate(
+            search=SearchVector("route_type")
+        ).filter(search=route_type_query)
     if location_query is not None:
         routes = Route.objects.annotate(
             search=SearchVector("location")
@@ -153,21 +155,29 @@ def delete_daytrip(request, daytrip_pk):
 @login_required
 def edit_daytrip(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
-    routes = Route.objects.all()
+    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    routes = Route.objects.all()[:20]
     planned_routes = daytrip.routes.all()
     pointsofinterest = Pointofinterest.objects.all()
     planned_pointofinterest = daytrip.points_of_interest.all()
     route_info = []
-    for route in routes:
-        route_info.append({
-            "name": route.name,
-            "pk": route.pk,
-            "longitude": route.longitude,
-            "latitude": route.latitude,
-            "route_type": route.route_type,
-            "rating": route.rating,
-        })
-    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    location_query = request.GET.get("location","")
+    if location_query is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_query)
+    else:
+        routes = None
+    if routes is not None:
+        for route in routes:
+            route_info.append({
+                "name": route.name,
+                "pk": route.pk,
+                "longitude": route.longitude,
+                "latitude": route.latitude,
+                "route_type": route.route_type,
+                "rating": route.rating,
+            })
     if request.method == "GET":
         form = DaytripForm(instance=daytrip)
     else:
