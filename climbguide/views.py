@@ -138,6 +138,14 @@ def edit_daytrip(request, daytrip_pk):
     })
 
 
+@login_required
+def addroute_to_daytrip(request, daytrip_pk):
+    daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+    if request.method == "POST":
+        pass
+
+
+
 # Point of Interest
 @login_required
 def add_pointofinterest(request):
