@@ -5,7 +5,7 @@ from django.contrib.postgres.search import SearchVector
 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
-from .forms import DaytripForm, PhotoForm, PointofinterestForm
+from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
 # Views
 def home(request):
@@ -237,5 +237,19 @@ def addphoto_to_pointofinterest(request, pointofinterest_pk):
             photo.save()
             return redirect("pointofinterest_detail", pointofinterest_pk=pointofinterest.pk)
     return render(request, "climbguide/addphoto_to_pointofinterest.html", {
+        "form": form
+    })
+
+@login_required
+def addlocation_to_pointofinterest(request, pointofinterest_pk):
+    if request.method == "GET":
+        form = LocationForm()
+    else:
+        form = LocationForm(request.POST)
+        pointofinterest = get_object_or_404(Pointofinterest, pk=pointofinterest_pk)
+        if form.is_valid:
+            form.save()
+            return redirect("pointofinterest_detail", pointofinterest_pk=pointofinterest.pk)
+    return render(request, "climbguide/add_poi_location.html", {
         "form": form
     })

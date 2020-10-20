@@ -43,8 +43,8 @@ urlpatterns = [
     path('pointsofinterest/edit/<int:pointofinterest_pk>', views.edit_pointofinterest, name="edit_pointofinterest"),
     path('pointsofinterest/delete/<int:pointofinterest_pk>', views.delete_pointofinterest, name="delete_pointofinterest"),
     path('pointsofinterest/detail/<int:pointofinterest_pk>/addphoto/', views.addphoto_to_pointofinterest, name="addphoto_to_pointofinterest"),
+    path('pointsofinterest/detail/<int:pointofinterest_pk>/addlocation/',views.addlocation_to_pointofinterest, name="add_poi_location"),    
 
-    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

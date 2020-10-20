@@ -18,6 +18,8 @@ gunicorn = "*"
 pillow = "*"
 django-imagekit = "*"
 django-allauth = "*"
+django-location-field = "*"
+django-mapbox-location-field = "*"
 
 [requires]
 python_version = "3.8"

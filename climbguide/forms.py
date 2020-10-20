@@ -1,5 +1,5 @@
 from django import forms
-from .models import Daytrip, Photo, Pointofinterest
+from .models import Daytrip, Photo, Pointofinterest, Location
 
 class DaytripForm(forms.ModelForm):
     class Meta:
@@ -35,3 +35,8 @@ class PointofinterestForm(forms.ModelForm):
             "public",
             "category"
         ]
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = "__all__"
