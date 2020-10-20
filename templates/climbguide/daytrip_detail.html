@@ -15,6 +15,7 @@
 
 {{ route_info|json_script:"route_info" }}
 
+{% block scripts %}
 <script>
 // Initalize bounding variables
 var minLongitude
@@ -81,6 +82,5 @@ window.addEventListener('load', (e) => {
         console.log("bounds updated!")
     })
 </script>
-
-
+{% endblock scripts%}
 {% endblock %}
