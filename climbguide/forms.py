@@ -30,8 +30,8 @@ class PointofinterestForm(forms.ModelForm):
         fields = [
             "name",
             "information",
-            "longitude",
-            "latitude",
+            # "longitude",
+            # "latitude",
             "public",
             "category"
         ]

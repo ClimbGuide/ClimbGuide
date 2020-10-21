@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
-
+from django.views.generic import CreateView 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
 from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
@@ -248,7 +248,7 @@ def addlocation_to_pointofinterest(request, pointofinterest_pk):
         form = LocationForm(request.POST)
         pointofinterest = get_object_or_404(Pointofinterest, pk=pointofinterest_pk)
         if form.is_valid:
-            form.save()
+            form.save(pointofinterest.location)
             return redirect("pointofinterest_detail", pointofinterest_pk=pointofinterest.pk)
     return render(request, "climbguide/add_poi_location.html", {
         "form": form

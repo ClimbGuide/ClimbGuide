@@ -24,7 +24,7 @@
     </form>
 </div>
 {% endif %}
-<button id="button-two">Sumbit Photo</button>
+<button id="button-two">Submit Photo</button>
 <div id="form-two" class="hidden">
     <form action="{% url 'addphoto_to_pointofinterest' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -33,5 +33,16 @@
             <button type="submit">Submit Photo</button>
         </div>
     </form>
+</div>
+<button id="button-location">Get Location!</button>
+<div id="form-location" class="hidden">
+    <form action="{% url 'add_poi_location.html' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ LocationForm.as_p }}
+        <div>
+            <button type="submit">Get Location</button>
+        </div>
+    </form>
+    {{ form.media }}
 </div>
 {% endblock %}
