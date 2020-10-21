@@ -5,6 +5,7 @@ from django.contrib.postgres.search import SearchVector
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+import json
 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
@@ -203,18 +204,19 @@ def edit_daytrip(request, daytrip_pk):
 @login_required
 @csrf_exempt
 @require_POST
-def addroute_to_daytrip(request, daytrip_pk, route_pk):
+def addroutes_to_daytrip(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
-    route = get_object_or_404(Route, pk=route_pk)
     if request.method == "POST":
-        if request.user in daytrip.owners.all():
-            if route in daytrip.routes.all():
-                return JsonResponse({"already_planned": True})
-            else:
-                daytrip.routes.add(route)
-                return JsonResponse({"route_planned": True})
-        else:
-            return redirect("daytrip_detail", daytrip_pk=daytrip.pk)
+        routes = json.loads(request.body)
+        daytrip.routes.clear()
+        print(daytrip.routes.all())
+        for route in routes["routes"]:
+            route_obj = Route.objects.get(
+                pk=route["route_pk"]
+            )
+            daytrip.routes.add(route_obj)
+        print(daytrip.routes.all())
+    return JsonResponse({"RoutesAdded": True})
 
 
 

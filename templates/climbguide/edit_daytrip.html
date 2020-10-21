@@ -148,19 +148,36 @@ var plannedRoutesContainer = document.querySelector("#container2")
 
 sendRoutesButton.addEventListener("click", function (event) {
     event.preventDefault()
+    var route_List = []
     for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
-        console.log(route)
         route.pk = route.dataset.routeid
         console.log(route.pk)
-        sendRoute(route)
+        let route_obj = makeRouteObject(route)
+        route_List.push(route_obj) 
     }
+    console.log(route_List)
+    var jsonObj = {
+        routes : route_List
+    }
+    console.log(jsonObj)
+    sendRoutePks(jsonObj)
 })
 
-var sendRoute = function (route) {
+var makeRouteObject = function (route) {
+    return {
+        route_pk: route.pk,
+    }
+}
+var sendRoutePks = function (jsonObj) {
     const daytrip_pk = container2.dataset.daytripid
-    const url = `/daytrips/detail/${daytrip_pk}/addroute/${route.pk}`
+    const url = `/daytrips/detail/${daytrip_pk}/addroutes/`
     fetch(url, {
-        method: "POST"
+        method: "POST",
+        body: JSON.stringify(jsonObj),
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json; charset=UTF-8'
+        }
     })
     .then(res => res.json())
     .then(data => console.log(data))
