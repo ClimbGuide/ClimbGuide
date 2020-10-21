@@ -9,7 +9,7 @@ import json
 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
-from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
+from .forms import DaytripForm, PhotoForm, PointofinterestForm
 
 # Views
 def home(request):
@@ -245,8 +245,7 @@ def pointofinterest_detail(request, pointofinterest_pk):
         "pointofinterest": pointofinterest,
         "photos": photos,
         "PointofinterestForm": PointofinterestForm(instance=pointofinterest),
-        "PhotoForm": PhotoForm,
-        "LocationForm":LocationForm
+        "PhotoForm": PhotoForm
     })
 
 
