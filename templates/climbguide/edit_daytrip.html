@@ -35,10 +35,11 @@
         <h3>Routes</h3>
         <div id="container1">
             {% for route in routes %}
-                <div>
-                    {{ route.name }}<br>
-                    {{ route.route_type }} | {{ route.rating }}<br>
-                </div><br>
+                {% if route not in planned_routes %}
+                <div data-routeid="{{ route.id }}">
+                    {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
+                </div>
+                {% endif %}
             {% empty %}
                 <div>Search for routes!</div>
             {% endfor %}
@@ -46,12 +47,11 @@
     </div>
     <div class="route-planning-column">
         <h3> {{ daytrip.title }} Routes</h3>
-        <div id="container2"><br><br>
+        <div id="container2" data-daytripid="{{ daytrip.id }}"><br><br>
                 {% for route in planned_routes %}
-                    <div>
-                        {{ route.name }}<br>
-                        {{ route.route_type }} | {{ route.rating }}<br>
-                    </div><br>
+                <div id="plannedRoute" data-routeid="{{ route.id }}">
+                    {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
+                </div>
                 {% endfor %}
         </div>
         <button id="send-routes-button">Add Routes</button>
@@ -137,21 +137,51 @@ dragula([
         console.log("Dropped in same box.")
     } 
     console.log("Dropped in different box.")
+    if (target === document.querySelector("#container2")) {
+        el.id = "plannedRoute"
+        console.log("route id set to planned")
+    }
 })
 // Send array of planned routes to the backend
 var sendRoutesButton = document.querySelector("#send-routes-button")
-var plannedRoutes = document.querySelector("#container2")
+var plannedRoutesContainer = document.querySelector("#container2")
 
 sendRoutesButton.addEventListener("click", function (event) {
     event.preventDefault()
-    var plannedRouteList = []
-    for (const route of plannedRoutes.getElementsByTagName("div")) {
-        console.log(route)
-        plannedRouteList.push(route)
+    var route_List = []
+    for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
+        route.pk = route.dataset.routeid
+        console.log(route.pk)
+        let route_obj = makeRouteObject(route)
+        route_List.push(route_obj) 
     }
-    console.log(plannedRouteList)
+    console.log(route_List)
+    var jsonObj = {
+        routes : route_List
+    }
+    console.log(jsonObj)
+    sendRoutePks(jsonObj)
 })
 
+var makeRouteObject = function (route) {
+    return {
+        route_pk: route.pk,
+    }
+}
+var sendRoutePks = function (jsonObj) {
+    const daytrip_pk = container2.dataset.daytripid
+    const url = `/daytrips/detail/${daytrip_pk}/addroutes/`
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(jsonObj),
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json; charset=UTF-8'
+        }
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+}
 
 </script>
 {% endblock scripts %}

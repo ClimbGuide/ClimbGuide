@@ -2,6 +2,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+import json
 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
@@ -195,6 +199,26 @@ def edit_daytrip(request, daytrip_pk):
         "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
+
+
+@login_required
+@csrf_exempt
+@require_POST
+def addroutes_to_daytrip(request, daytrip_pk):
+    daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+    if request.method == "POST":
+        routes = json.loads(request.body)
+        daytrip.routes.clear()
+        print(daytrip.routes.all())
+        for route in routes["routes"]:
+            route_obj = Route.objects.get(
+                pk=route["route_pk"]
+            )
+            daytrip.routes.add(route_obj)
+        print(daytrip.routes.all())
+    return JsonResponse({"RoutesAdded": True})
+
+
 
 
 # Point of Interest

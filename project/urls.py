@@ -37,6 +37,8 @@ urlpatterns = [
     path('daytrips/detail/<int:daytrip_pk>', views.daytrip_detail, name="daytrip_detail"),
     path('daytrips/edit/<int:daytrip_pk>', views.edit_daytrip, name="edit_daytrip"),
     path('daytrips/delete/<int:daytrip_pk>', views.delete_daytrip, name="delete_daytrip"),
+    path('daytrips/detail/<int:daytrip_pk>/addroutes/', views.addroutes_to_daytrip, name="addroutes_to_daytrip"),
+
         # pointofinterest
     path('pointsofinterest/add/', views.add_pointofinterest, name="add_pointofinterest"),
     path('pointsofinterest/detail/<int:pointofinterest_pk>', views.pointofinterest_detail, name="pointofinterest_detail"),
