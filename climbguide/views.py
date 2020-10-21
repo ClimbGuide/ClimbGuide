@@ -192,7 +192,8 @@ def pointofinterest_detail(request, pointofinterest_pk):
         "pointofinterest": pointofinterest,
         "photos": photos,
         "PointofinterestForm": PointofinterestForm(instance=pointofinterest),
-        "PhotoForm": PhotoForm
+        "PhotoForm": PhotoForm,
+        "LocationForm":LocationForm
     })
 
 
@@ -246,10 +247,12 @@ def addlocation_to_pointofinterest(request, pointofinterest_pk):
         form = LocationForm()
     else:
         form = LocationForm(request.POST)
-        pointofinterest = get_object_or_404(Pointofinterest, pk=pointofinterest_pk)
+        point_of_interest = get_object_or_404(Pointofinterest, pk=pointofinterest_pk)
         if form.is_valid:
-            form.save(pointofinterest.location)
-            return redirect("pointofinterest_detail", pointofinterest_pk=pointofinterest.pk)
+            location = form.save(commit=False)
+            point_of_interest.location = location
+            location.save()
+            return redirect("pointofinterest_detail", pointofinterest_pk=point_of_interest.pk)
     return render(request, "climbguide/add_poi_location.html", {
         "form": form
     })

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
-
+{% block meta %}
+{% load mapbox_location_field_tags %}
+{% location_field_includes %}
+{% include_jquery %}
+{% endblock %}
 {% block content %}
 <h2>{{ pointofinterest.name }}</h2>
 {% for photo in photos %}
@@ -34,15 +38,19 @@
         </div>
     </form>
 </div>
-<button id="button-location">Get Location!</button>
-<div id="form-location" class="hidden">
-    <form action="{% url 'add_poi_location.html' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
+<button id="button-three">Submit Location</button>
+<div id="form-three" class="hidden">
+    <form action="{% url 'add_poi_location' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ LocationForm.as_p }}
         <div>
-            <button type="submit">Get Location</button>
+            <button type="submit">Submit Location</button>
         </div>
     </form>
-    {{ form.media }}
+    {{ Locationform.media }}
+    <div>
+        <a href="{% url 'add_poi_location' pointofinterest_pk=pointofinterest.pk %}"><button>Get Location</button></a>
+    </div>
 </div>
+
 {% endblock %}
