@@ -1,41 +1,92 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Edit Trip</h2>
+<h2>Update {{ daytrip.title }}</h2>
 <div>
+    {{ daytrip.date }}<br>
+    {{ daytrip.description }}<br>
+</div><br>
+<div>
+    <button id="button-one">Update Trip Information</button>
+    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
+</div><br>
+<div id="form-one" class="hidden">
     <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
             <button type="submit">Update Trip</button>
-           <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
+           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
         </div>
     </form>
 </div><br>
-<div>We will use mapbox to do these things below:</div>
-<div>1) Show all routes on mapbox</div>
-<div>2) Show all POI on mapbox</div>
-<div>2) When you click on a route or POI, you get a pop up with an option to add it to the trip</div>
-<div>3) Use JS to append route or POI to the appropriate planned list when added</div>
-<div>4) Use dragula or sortable JS to order the list</div>
-<div>5) On sumbit, send the planned list as an ordered list (array) to backend to be added</div><br>
+
+<form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
+    <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
+    <p>
+        <button type="submit">Search</button>
+    </p>
+</form>
+
 <div id='map' style='width: 400px; height: 300px;'></div>
+<p>Drag over routes to add them to your trip!</p>
+<div id="route-planning-container">
+    <div class="route-planning-column">
+        <h3>Routes</h3>
+        <div id="container1">
+            {% for route in routes %}
+                {% if route not in planned_routes %}
+                <div data-routeid="{{ route.id }}">
+                    {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
+                </div>
+                {% endif %}
+            {% empty %}
+                <div>Search for routes!</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="route-planning-column">
+        <h3> {{ daytrip.title }} Routes</h3>
+        <div id="container2" data-daytripid="{{ daytrip.id }}"><br><br>
+                {% for route in planned_routes %}
+                <div id="plannedRoute" data-routeid="{{ route.id }}">
+                    {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
+                </div>
+                {% endfor %}
+        </div>
+        <button id="send-routes-button">Add Routes</button>
+    </div>  
+</div>
 
 {{ route_info|json_script:"route_info" }}
 
+{% block scripts %}
 <script>
+// Initalize bounding variables
+var minLongitude
+var minLatitude
+var maxLongitude
+var maxLatitude
+// Load map and set to variable map
+mapboxgl.accessToken = '{{mapbox_access_token}}';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-80.793457, 35.782169],
+    zoom: 4,
+})
+
+console.log("map loaded!")
+// Event starts as soon the page begins loading
+// Get data, load to map, set markers, and initalize bounding varibales
 document.addEventListener("DOMContentLoaded", (e) => {
     const route_info = JSON.parse(document.getElementById("route_info").textContent)
-    mapboxgl.accessToken = '{{mapbox_access_token}}';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-80.793457, 35.782169],
-        zoom: 4,
-    })
-    console.log("map loaded!")
+    var latitudeList = []
+    var longitudeList = []
     for (let i = 0; i < route_info.length; i++) {
         let route = route_info[i]
+        latitudeList.push(route.latitude)
+        longitudeList.push(route.longitude)
         console.log(route.name)
         var html =  `<div style="border-radius: 3px; width: 200px;">
                         <h4 style="border-radius: 2px;">${route.name}</h4>
@@ -56,6 +107,82 @@ document.addEventListener("DOMContentLoaded", (e) => {
             .setPopup(customPopUp)
             .addTo(map);
     }
+    console.log(latitudeList)
+    console.log(longitudeList)
+    minLongitude = Math.min.apply(Math, longitudeList)
+    minLatitude = Math.min.apply(Math, latitudeList)
+    maxLongitude = Math.max.apply(Math, longitudeList)
+    maxLatitude = Math.max.apply(Math, latitudeList)
+    console.log(minLongitude)
+    console.log(minLatitude)
+    console.log(maxLongitude)
+    console.log(maxLatitude)
 })
+// Bound mapbox after page loads, based on queried data
+window.addEventListener('load', (e) => {
+        map.fitBounds([
+            [(minLongitude - 0.05), (minLatitude - 0.1)],
+            [(maxLongitude + 0.1), (maxLatitude + 0.1)]
+        ])
+        console.log("bounds updated!")
+    })
+// Dragula functionality 
+dragula([
+    document.querySelector('#container1'),
+    document.querySelector('#container2')
+])
+
+.on('drop', (el, target, source, sibling) => {
+    if (target === source) {
+        console.log("Dropped in same box.")
+    } 
+    console.log("Dropped in different box.")
+    if (target === document.querySelector("#container2")) {
+        el.id = "plannedRoute"
+        console.log("route id set to planned")
+    }
+})
+// Send array of planned routes to the backend
+var sendRoutesButton = document.querySelector("#send-routes-button")
+var plannedRoutesContainer = document.querySelector("#container2")
+
+sendRoutesButton.addEventListener("click", function (event) {
+    event.preventDefault()
+    var route_List = []
+    for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
+        route.pk = route.dataset.routeid
+        console.log(route.pk)
+        let route_obj = makeRouteObject(route)
+        route_List.push(route_obj) 
+    }
+    console.log(route_List)
+    var jsonObj = {
+        routes : route_List
+    }
+    console.log(jsonObj)
+    sendRoutePks(jsonObj)
+})
+
+var makeRouteObject = function (route) {
+    return {
+        route_pk: route.pk,
+    }
+}
+var sendRoutePks = function (jsonObj) {
+    const daytrip_pk = container2.dataset.daytripid
+    const url = `/daytrips/detail/${daytrip_pk}/addroutes/`
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(jsonObj),
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json; charset=UTF-8'
+        }
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+}
+
 </script>
+{% endblock scripts %}
 {% endblock %}
