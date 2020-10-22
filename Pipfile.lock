@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4c3a9840bcea1878515e8187eb855efa1c801f81b4e6eef308f38bf32fdb16fe"
+            "sha256": "e24fabb698bab825a8b3cafb659f40081f08f614638664e6b3d56ef6a18c1721"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -190,6 +190,13 @@
             ],
             "index": "pypi",
             "version": "==2.1.0"
+        },
+        "django-mapbox-location-field": {
+            "hashes": [
+                "sha256:1c91f88841f2ad8ff9bbaf82c981cfb8ac8c195599fe9a356a0e2192e848ad3a"
+            ],
+            "index": "pypi",
+            "version": "==1.6.3"
         },
         "gunicorn": {
             "hashes": [

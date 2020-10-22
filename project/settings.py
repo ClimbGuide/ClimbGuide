@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # Third-party
     'debug_toolbar',
     'django_extensions',
+    'mapbox_location_field',
     'imagekit',
     'allauth',
     'allauth.account',
@@ -58,6 +59,8 @@ INSTALLED_APPS = [
     'users',
     'climbguide',
 ]
+    # Locate User for POI
+MAPBOX_KEY = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
 
 SITE_ID = 1
 
