@@ -6,15 +6,23 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 import json
+import environ
 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
 from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),)
+environ.Env.read_env()
+
+
 # Views
 def home(request):
     route_info = []
-    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    mapbox_access_token = env("MAPBOX_KEY")
     location_query = request.GET.get("location","")
     route_type_query = request.GET.get("routetype","")
 
@@ -124,7 +132,7 @@ def daytrip_detail(request, daytrip_pk):
     routes = daytrip.routes.all()
     owners = daytrip.owners.all()
     pointsofinterest = daytrip.points_of_interest.all()
-    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    mapbox_access_token = env("MAPBOX_KEY")
     for route in routes:
         route_info.append({
             "name": route.name,
@@ -159,7 +167,7 @@ def delete_daytrip(request, daytrip_pk):
 @login_required
 def edit_daytrip(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
-    mapbox_access_token = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+    mapbox_access_token = env("MAPBOX_KEY")
     routes = Route.objects.all()[:20]
     planned_routes = daytrip.routes.all()
     pointsofinterest = Pointofinterest.objects.all()
