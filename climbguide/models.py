@@ -1,4 +1,5 @@
 from django.db import models
+from mapbox_location_field.models import LocationField, AddressAutoHiddenField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
 from users.models import User
@@ -21,10 +22,11 @@ class Pointofinterest(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="pointsofinterest", null=True, blank=True)
     name = models.CharField(max_length=100, null=False, blank=False)
     information = models.CharField(max_length=250, null=True, blank=True)
-    longitude = models.FloatField(null=False, blank=False)
-    latitude = models.FloatField(null=False, blank=False)
+    longitude = models.FloatField(null=False, blank=True, default=1)
+    latitude = models.FloatField(null=False, blank=True, default=1)
+    location = models.OneToOneField(to="Location", related_name='pointofinterest',null=True, blank=True, on_delete=models.CASCADE)
     date_added = models.DateField(auto_now_add=True)
-    date_updated = models.DateField(auto_now=True)
+    date_updated = models.DateField(auto_now=True)   
     public = models.BooleanField(default=True)
     HANGOUT = "HG"
     PARKING = "PG"
@@ -38,6 +40,8 @@ class Pointofinterest(models.Model):
     ]
     category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=HANGOUT)
     
+class Location(models.Model):
+    location = LocationField(map_attrs={"style":"mapbox://styles/mapbox/streets-v11","center": (-80.793457, 35.782169),"zoom":5})
 
 class Daytrip(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)

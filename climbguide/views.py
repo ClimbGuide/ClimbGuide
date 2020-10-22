@@ -9,7 +9,7 @@ import json
 
 # Project Files Imports 
 from .models import Route, Daytrip, Pointofinterest
-from .forms import DaytripForm, PhotoForm, PointofinterestForm
+from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
 # Views
 def home(request):
@@ -290,5 +290,21 @@ def addphoto_to_pointofinterest(request, pointofinterest_pk):
             photo.save()
             return redirect("pointofinterest_detail", pointofinterest_pk=pointofinterest.pk)
     return render(request, "climbguide/addphoto_to_pointofinterest.html", {
+        "form": form
+    })
+
+@login_required
+def addlocation_to_pointofinterest(request, pointofinterest_pk):
+    if request.method == "GET":
+        form = LocationForm()
+    else:
+        form = LocationForm(request.POST)
+        point_of_interest = get_object_or_404(Pointofinterest, pk=pointofinterest_pk)
+        if form.is_valid:
+            location = form.save()
+            point_of_interest.location = location
+            point_of_interest.save()
+            return redirect("pointofinterest_detail", pointofinterest_pk=point_of_interest.pk)
+    return render(request, "climbguide/add_poi_location.html", {
         "form": form
     })
