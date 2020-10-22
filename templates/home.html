@@ -33,6 +33,25 @@ console.log("map loaded!")
 // Get data, load to map, set markers, and initalize bounding varibales
 document.addEventListener("DOMContentLoaded", (e) => {
     const route_info = JSON.parse(document.getElementById("route_info").textContent)
+    mapboxgl.accessToken = '{{mapbox_access_token}}';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-80.793457, 35.782169],
+        zoom: 4,
+    })
+    // Fullscreen Feature
+        map.addControl(new mapboxgl.FullscreenControl());
+    // Add geolocate control to the map.
+        map.addControl(
+        new mapboxgl.GeolocateControl({
+        positionOptions: {
+        enableHighAccuracy: true
+    },
+        trackUserLocation: true
+    })
+    );
+    console.log("map loaded!")
     var latitudeList = []
     var longitudeList = []
     for (let i = 0; i < route_info.length; i++) {

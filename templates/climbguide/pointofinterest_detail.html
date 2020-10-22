@@ -1,5 +1,9 @@
 {% extends "base.html" %}
-
+{% block meta %}
+{% load mapbox_location_field_tags %}
+{% location_field_includes %}
+{% include_jquery %}
+{% endblock %}
 {% block content %}
 <h2>{{ pointofinterest.name }}</h2>
 {% for photo in photos %}
@@ -10,6 +14,7 @@
 <div>
     {{ pointofinterest.get_category_display }}<br>
     {{ pointofinterest.information }}
+    {{ pointofinterest.location.location }}
 </div><br>
 {% if user.is_authenticated and user == pointofinterest.owner %}
 <button id="button-one">Edit Point of Interest</button>
@@ -24,7 +29,7 @@
     </form>
 </div>
 {% endif %}
-<button id="button-two">Sumbit Photo</button>
+<button id="button-two">Submit Photo</button>
 <div id="form-two" class="hidden">
     <form action="{% url 'addphoto_to_pointofinterest' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -34,4 +39,9 @@
         </div>
     </form>
 </div>
+    <div>
+        <a href="{% url 'add_poi_location' pointofinterest_pk=pointofinterest.pk %}"><button>Get Location</button></a>
+    </div>
+</div>
+
 {% endblock %}
