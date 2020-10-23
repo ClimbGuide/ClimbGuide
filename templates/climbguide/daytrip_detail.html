@@ -17,7 +17,7 @@
     {% for route in routes %}
         <li>{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li>
     {% empty %}
-        <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button>Add Routes!</button></a>
+        <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Add Routes!</button></a>
     {% endfor %}
 </ul>
 

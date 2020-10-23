@@ -48,7 +48,6 @@ def home(request):
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
         "route_info": route_info,
-        "SearchQueryForm": SearchQueryForm,
         "routes": routes,
         "location_q": location_q or "",
         "route_type_q": route_type_q or "",
