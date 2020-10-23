@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'climbguide',
 ]
     # Locate User for POI
-MAPBOX_KEY = 'pk.eyJ1IjoiYmVsb25nYXJvYmVydCIsImEiOiJja2c2cWd2N3IwdGluMnBwaWV5ZzU2bjhnIn0.QgRdSLNmSGfcu1CMWF7vhw'
+MAPBOX_KEY = env('MAPBOX_KEY')
 
 SITE_ID = 1
 
