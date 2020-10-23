@@ -8,15 +8,16 @@ from django.http import JsonResponse
 import json
 import environ
 
+# Project Files Imports 
+from .models import Route, Daytrip, Pointofinterest
+from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
+
+# Set env()
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),)
 environ.Env.read_env()
 
-
-# Project Files Imports 
-from .models import Route, Daytrip, Pointofinterest
-from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
 # Views
 def home(request):
@@ -127,7 +128,7 @@ def daytrip_detail(request, daytrip_pk):
     routes = daytrip.routes.all()
     owners = daytrip.owners.all()
     pointsofinterest = daytrip.points_of_interest.all()
-    mapbox_access_token = env('MAPBOX_KEY')
+    mapbox_access_token = env("MAPBOX_KEY")
     for route in routes:
         route_info.append({
             "name": route.name,
@@ -163,7 +164,8 @@ def delete_daytrip(request, daytrip_pk):
 @login_required
 def edit_daytrip(request, daytrip_pk):
     daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
-    mapbox_access_token = env('MAPBOX_KEY')
+    mapbox_access_token = env("MAPBOX_KEY")
+    routes = Route.objects.all()[:20]
     planned_routes = daytrip.routes.all()
     pointsofinterest = Pointofinterest.objects.all()
     planned_pointofinterest = daytrip.points_of_interest.all()
