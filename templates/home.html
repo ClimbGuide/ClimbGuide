@@ -42,12 +42,12 @@
     </div>
 </form>
 <div id='map' style='width: 400px; height: 300px;'></div>
-
-<ul>
+<h2 class="f4 bold center mw5">Routes</h2>
+<ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
     {% for route in routes %}
-        <li>{{ route.name }} | {{ route.route_type }}</li>
+        <li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }}</li>
     {% empty %}
-        <div>Seach for routes!</div>
+        <li class="ph3 pv2 bb b--light-silver">Sorry, no availble routes for that search.</li>
     {% endfor %}
 </ul>
 

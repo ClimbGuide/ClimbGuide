@@ -38,12 +38,21 @@
             <button type="submit">Add Point of Interest</button>
         </form>
     </div>
-    <h3> My Trips</h3>
-    {% for daytrip in daytrips %}
-        <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}">{{ daytrip.title }}</a>
-    {% empty %}
-        <p>No trips planned yet!</p>
-    {% endfor %}
+    <h3 class="f4 bold center mw5"> My Trips</h3>
+    <section class="cf w-100 pa2-ns">
+        {% for daytrip in daytrips %}
+            <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
+                <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}" class="ph2 ph0-ns pb3 link db">
+                    <h3 class="f5 f4-ns mb0 black-90">{{ daytrip.title }}</h3>
+                    <h3 class="f6 f5 fw4 mt2 black-60">{{ daytrip.date }}</h3>
+                </a>
+            </article>
+        {% empty %}
+        <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
+            <h3 class="f5 f4-ns mb0 black-90">No trips planned yet!</h3>
+        </article>
+        {% endfor %}
+    </section>
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'account_login' %}">Login Here</a>

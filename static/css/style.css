@@ -16,3 +16,25 @@
     flex-basis: 25%;
     padding: 10px;
 }
+
+.form-style {
+    font-family: inherit;
+    padding: 10px;
+}
+
+.form-style label {
+	margin:0 0 3px 0;
+	padding:0px;
+	display: block;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+}
+
+.form-style input[type=text], .form-style input[type=search] {
+    box-shadow: 0 0 8px rgba(206, 150, 47, 0.884);
+    border: 1px solid rgba(206, 150, 47, 0.884);
+}
+
+.form-style input[type=file] {
+    color: rgb(255, 255, 255);
+}

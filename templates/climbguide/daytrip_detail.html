@@ -12,12 +12,12 @@
 </div><br>
 
 <div id='map' style='width: 400px; height: 300px;'></div>
-
-<ul>
+<h3 class="f4 bold center mw5">Planned Routes</h3>
+<ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
     {% for route in routes %}
-        <li>{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li>
+        <li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li>
     {% empty %}
-        <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button>Add Routes!</button></a>
+    <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><li class="ph3 pv2 bb b--light-silver">Add Routes</li></a>
     {% endfor %}
 </ul>
 
@@ -68,8 +68,8 @@
                         </div>`
             var customPopUp = new mapboxgl.Popup({
                 anchor: "bottom",
-                offset: { "bottom" : [0, -10]},
-                closeOnClick: false
+                offset: { "bottom" : [0, -10] },
+                closeOnClick: false,
             }).setHTML(html);
     
             let color = "green"
