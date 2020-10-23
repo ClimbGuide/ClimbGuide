@@ -26,6 +26,44 @@
     <p>
         <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
     </p>
+    <p><label for="id_location">Route Location:</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
+    <p><label for="id_route_type">Route Type:</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
+    <option value="trad" selected>trad</option>
+    <option value="sport">sport</option>
+    <option value="boulder">boulder</option>
+    </select></p>
+    <p><label for="id_rating">Route Difficulty:</label> <select name="rating" id="id_rating" value="{{ rating_q }}">
+        <optgroup label="Trad/Sport Rating">
+            <option value="5.4" selected>5.4</option>
+            <option value="5.5">5.5</option>
+            <option value="5.6">5.6</option>
+            <option value="5.7">5.7</option>
+            <option value="5.8">5.8</option>
+            <option value="5.9">5.9</option>
+            <option value="5.10">5.10</option>
+            <option value="5.11">5.11</option>
+            <option value="5.12">5.12</option>
+            <option value="5.13">5.13</option>
+            <option value="5.14">5.14</option>
+            <option value="5.15">5.15</option>
+        </optgroup>
+        <optgroup label="Boulder Rating">
+            <option value="V0">V0</option>
+            <option value="V1">V1</option>
+            <option value="V2">V2</option>
+            <option value="V3">V3</option>
+            <option value="V4">V4</option>
+            <option value="V5">V5</option>
+            <option value="V6">V6</option>
+            <option value="V7">V7</option>
+            <option value="V8">V8</option>
+            <option value="V9">V9</option>
+            <option value="V10">V10</option>
+        </optgroup>
+        </select></p>
+        <div>
+            <button type="submit">Search</button>
+        </div>
 </form>
 
 <div id='map' style='width: 400px; height: 300px;'></div>
@@ -33,25 +71,25 @@
 <div id="route-planning-container">
     <div class="route-planning-column">
         <h3>Routes</h3>
-        <div id="container1">
+        <ul id="container1">
             {% for route in routes %}
                 {% if route not in planned_routes %}
-                <div data-routeid="{{ route.id }}">
+                <li data-routeid="{{ route.id }}">
                     {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
-                </div>
+                </li>
                 {% endif %}
             {% empty %}
                 <div>Search for routes!</div>
             {% endfor %}
-        </div>
+        </ul>
     </div>
     <div class="route-planning-column">
         <h3> {{ daytrip.title }} Routes</h3>
-        <div id="container2" data-daytripid="{{ daytrip.id }}"><br><br>
+        <ul id="container2" data-daytripid="{{ daytrip.id }}"><br><br>
                 {% for route in planned_routes %}
-                <div id="plannedRoute" data-routeid="{{ route.id }}">
+                <li id="plannedRoute" data-routeid="{{ route.id }}">
                     {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
-                </div>
+                </li>
                 {% endfor %}
         </div>
         <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="send-routes-button">Add Routes</button>
@@ -75,6 +113,17 @@ var map = new mapboxgl.Map({
     center: [-80.793457, 35.782169],
     zoom: 4,
 })
+// Fullscreen Feature
+map.addControl(new mapboxgl.FullscreenControl());
+// Add geolocate control to the map.
+map.addControl(
+    new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+    })
+);
 
 console.log("map loaded!")
 // Event starts as soon the page begins loading
@@ -148,19 +197,24 @@ var plannedRoutesContainer = document.querySelector("#container2")
 
 sendRoutesButton.addEventListener("click", function (event) {
     event.preventDefault()
-    var route_List = []
-    for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
+    if (confirm("Are you finished adding routes?")) {
+        var route_List = []
+        for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
         route.pk = route.dataset.routeid
         console.log(route.pk)
         let route_obj = makeRouteObject(route)
         route_List.push(route_obj) 
+        }
+        console.log(route_List)
+        var jsonObj = {
+            routes : route_List
+        }
+        console.log(jsonObj)
+        sendRoutePks(jsonObj)
     }
-    console.log(route_List)
-    var jsonObj = {
-        routes : route_List
+    if ({"RoutesAdded": true}) {
+        window.location.href = "{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"
     }
-    console.log(jsonObj)
-    sendRoutePks(jsonObj)
 })
 
 var makeRouteObject = function (route) {
