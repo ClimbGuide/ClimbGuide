@@ -16,7 +16,7 @@
 </div><br>
 <button id="button-one">Sumbit Photo</button>
 <div id="form-one" class="hidden">
-    <form action="{% url 'addphoto_to_route' route_pk=route.pk %}" method="POST" enctype="multipart/form-data">
+    <form class="form-style" action="{% url 'addphoto_to_route' route_pk=route.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ PhotoForm.as_p }}
         <div>

@@ -8,24 +8,20 @@
 </div><br>
 <div>
     <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit"id="button-one">Update Trip Information</button>
-    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Delete Trip</button></a>
-</div><br>
+    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green"type="submit">Delete Trip</button></a>
+</div>
 <div id="form-one" class="hidden">
-    <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
+    <form class="form-style" action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
             <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Trip</button>
-           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Cancel Update</button></a> 
+           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Cancel Update</button></a> 
         </div>
     </form>
-</div><br>
+</div>
 
-<form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
-    <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
-    <p>
-        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
-    </p>
+<form class="form-style" action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
     <p><label for="id_location">Route Location:</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
     <p><label for="id_route_type">Route Type:</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
     <option value="trad" selected>trad</option>
@@ -62,7 +58,7 @@
         </optgroup>
         </select></p>
         <div>
-            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Search</button>
         </div>
 </form>
 
@@ -79,7 +75,7 @@
                 </li>
                 {% endif %}
             {% empty %}
-                <div>Search for routes!</div>
+                <li class="ph3 pv2 bb b--light-silver">Search for routes!</li>
             {% endfor %}
         </ul>
     </div>
@@ -93,8 +89,8 @@
                 {% empty %}
                 <li class="ph3 pv2 bb b--light-silver">Add a Route</li>
                 {% endfor %}
-        </div>
-        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="send-routes-button">Add Routes</button>
+            </ul>
+        <div><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="send-routes-button">Add Routes</button></div>
     </div>  
 </div>
 

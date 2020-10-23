@@ -28,10 +28,8 @@
       <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="/">Home</a>
       {% if user.is_authenticated %}
       <a class="f6 f5-l link bg-animate black-80 hover-bg-light-green dib pa3 ph4-l" href="{% url 'profile' %}">Profile</a>
-      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'search' %}">Search</a>
       <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'account_logout' %}">Logout</a>
       {% else %}
-      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'search' %}">Search</a>
       <a class="f6 f5-l link bg-animate black-80 hover-bg-light-yellow dib pa3 ph4-l" href="{% url 'account_login' %}">Login</a>
     {% endif %}
     </nav>
