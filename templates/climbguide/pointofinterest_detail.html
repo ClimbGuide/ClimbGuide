@@ -17,30 +17,30 @@
     {{ pointofinterest.location.location }}
 </div><br>
 {% if user.is_authenticated and user == pointofinterest.owner %}
-<button id="button-one">Edit Point of Interest</button>
+<button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-one">Edit Point of Interest</button>
 <div id="form-one" class="hidden">
     <form action="{% url 'edit_pointofinterest' pointofinterest_pk=pointofinterest.pk %}"method="POST">
         {% csrf_token %}
         {{ PointofinterestForm.as_p }}
         <div>
-            <button type="submit">Update Point of Interest</button>
-           <a href="{% url 'pointofinterest_detail' pointofinterest_pk=pointofinterest.pk %}"><button>Cancel Update</button></a> 
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Point of Interest</button>
+           <a href="{% url 'pointofinterest_detail' pointofinterest_pk=pointofinterest.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Cancel Update</button></a> 
         </div>
     </form>
 </div>
 {% endif %}
-<button id="button-two">Submit Photo</button>
+<button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-two">Submit Photo</button>
 <div id="form-two" class="hidden">
     <form action="{% url 'addphoto_to_pointofinterest' pointofinterest_pk=pointofinterest.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ PhotoForm.as_p }}
         <div>
-            <button type="submit">Submit Photo</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Submit Photo</button>
         </div>
     </form>
 </div>
     <div>
-        <a href="{% url 'add_poi_location' pointofinterest_pk=pointofinterest.pk %}"><button>Get Location</button></a>
+        <a href="{% url 'add_poi_location' pointofinterest_pk=pointofinterest.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Get Location</button></a>
     </div>
 </div>
 

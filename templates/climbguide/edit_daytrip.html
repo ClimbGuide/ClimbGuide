@@ -7,21 +7,25 @@
     {{ daytrip.description }}<br>
 </div><br>
 <div>
-    <button id="button-one">Update Trip Information</button>
-    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
+    <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit"id="button-one">Update Trip Information</button>
+    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Delete Trip</button></a>
 </div><br>
 <div id="form-one" class="hidden">
     <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-            <button type="submit">Update Trip</button>
-           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Trip</button>
+           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Cancel Update</button></a> 
         </div>
     </form>
 </div><br>
 
 <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
+    <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
+    <p>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
+    </p>
     <p><label for="id_location">Route Location:</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
     <p><label for="id_route_type">Route Type:</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
     <option value="trad" selected>trad</option>
@@ -58,7 +62,7 @@
         </optgroup>
         </select></p>
         <div>
-            <button type="submit">Search</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
         </div>
 </form>
 
@@ -89,8 +93,8 @@
                 {% empty %}
                 <li class="ph3 pv2 bb b--light-silver">Add a Route</li>
                 {% endfor %}
-        </ul>
-        <button id="send-routes-button">Add Routes</button>
+        </div>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="send-routes-button">Add Routes</button>
     </div>  
 </div>
 

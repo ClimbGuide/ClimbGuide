@@ -2,6 +2,11 @@
 {% block content %}
 <h2>Search Routes</h2>
 <form action="{% url 'home' %}" method="GET">
+    <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
+    <input type="search" name="routetype" placeholder="Route Type" value="{{ route_type_query}}"/>
+    <p>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
+    </p>
     <p><label for="id_location">Route Location:</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
     <p><label for="id_route_type">Route Type:</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
     <option value="trad" selected>trad</option>
@@ -38,7 +43,7 @@
         </optgroup>
         </select></p>
     <div>
-        <button type="submit">Search</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
     </div>
 </form>
 <div id='map' style='width: 400px; height: 300px;'></div>

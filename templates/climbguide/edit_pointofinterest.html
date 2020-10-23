@@ -7,8 +7,8 @@
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-            <button type="submit">Update Point of Interest</button>
-           <a href="{% url 'pointofinterest_detail' pointofinterest_pk=pointofinterest.pk %}"><button>Cancel Update</button></a> 
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Point of Interest</button>
+           <a href="{% url 'pointofinterest_detail' pointofinterest_pk=pointofinterest.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Cancel Update</button></a> 
         </div>
     </form>
 </div>

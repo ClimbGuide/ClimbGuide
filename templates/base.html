@@ -12,26 +12,31 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.min.js'></script>
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.2.0/mapbox-gl-geocoder.css' type='text/css'/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
     <link rel="stylesheet" href="{% static 'vendor/dragula/dragula.min.css' %}"/>
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
     <title>{% block title %}ClimbGuide{% endblock %}</title>
 </head>
-    <header>
-        <H1>ClimbGuide</H1>
-        {% block navbar %}
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">Profile</a>
-            <a href="{% url 'search' %}">Search</a>
-            <a href="{% url 'account_logout' %}">Logout</a>
-            {% else %}
-            <a href="{% url 'search' %}">Search</a>
-            <a href="{% url 'account_login' %}">Login</a>
-            {% endif %}
-        </nav>
-        {% endblock %}
-    </header>
+<header class="bg-white black-80 tc pv4 avenir">
+    <a href="" class="bg-black-80 ba b--black dib pa3 w2 h2 br-100">
+      <svg class="white" data-icon="skull" viewBox="0 0 32 32" style="fill:currentcolor"><title>skull icon</title><path d="M16 0 C6 0 2 4 2 14 L2 22 L6 24 L6 30 L26 30 L26 24 L30 22 L30 14 C30 4 26 0 16 0 M9 12 A4.5 4.5 0 0 1 9 21 A4.5 4.5 0 0 1 9 12 M23 12 A4.5 4.5 0 0 1 23 21 A4.5 4.5 0 0 1 23 12"></path></svg>
+    </a>
+    <h1 class="mt2 mb0 baskerville i fw1 f1">ClimbGuide</h1>
+    <h2 class="mt2 mb0 f6 fw4 ttu tracked">The Pocket Guide to help you Climb</h2>
+    {% block navbar %}
+    <nav class="bt bb tc mw7 center mt4">
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-lightest-blue dib pa3 ph4-l" href="/">Home</a>
+      {% if user.is_authenticated %}
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-green dib pa3 ph4-l" href="{% url 'profile' %}">Profile</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'search' %}">Search</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-pink dib pa3 ph4-l" href="{% url 'account_logout' %}">Logout</a>
+      {% else %}
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-blue dib pa3 ph4-l" href="{% url 'search' %}">Search</a>
+      <a class="f6 f5-l link bg-animate black-80 hover-bg-light-yellow dib pa3 ph4-l" href="{% url 'account_login' %}">Login</a>
+    {% endif %}
+    </nav>
+    {% endblock %}
+  </header>
     <body>
         {% block content %}
         {% endblock %}
