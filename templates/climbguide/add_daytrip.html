@@ -6,6 +6,6 @@
 <form action ="{% url 'add_daytrip' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Add Trip</button>
+    <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Add Trip</button>
 </form>
 {% endblock %}
