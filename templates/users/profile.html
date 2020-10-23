@@ -11,39 +11,48 @@
     <div>{{ user.bio }}</div>
     <div>
         <a href="{% url 'socialaccount_connections' %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Manage Social Accounts</button></a>
-        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-one">Edit User Info</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="button-one">Edit User Info</button>
     </div>
     <div>
-        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-two">Add Trip</button>
-        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-three">Add Point of Interest</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="button-two">Add Trip</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="button-three">Add Point of Interest</button>
     </div>
     <div id="form-one" class="hidden">
         <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Profile</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Update Profile</button>
         </form>
     </div>
     <div id="form-two" class="hidden">
-        <form action ="{% url 'add_daytrip' %}" method="POST">
+        <form class="form-style" action ="{% url 'add_daytrip' %}" method="POST">
             {% csrf_token %}
             {{ DaytripForm.as_p }}
-            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Add Trip</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Add Trip</button>
         </form>
     </div>
     <div id="form-three" class="hidden">
-        <form action ="{% url 'add_pointofinterest' %}" method="POST">
+        <form class="form-style" action ="{% url 'add_pointofinterest' %}" method="POST">
             {% csrf_token %}
             {{ PointofinterestForm.as_p }}
-            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Add Point of Interest</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Add Point of Interest</button>
         </form>
     </div>
-    <h3> My Trips</h3>
-    {% for daytrip in daytrips %}
-        <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}">{{ daytrip.title }}</a>
-    {% empty %}
-        <p>No trips planned yet!</p>
-    {% endfor %}
+    <h3 class="f4 bold center mw5"> My Trips</h3>
+    <section class="cf w-100 pa2-ns">
+        {% for daytrip in daytrips %}
+            <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
+                <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}" class="ph2 ph0-ns pb3 link db">
+                    <h3 class="f5 f4-ns mb0 black-90">{{ daytrip.title }}</h3>
+                    <h3 class="f6 f5 fw4 mt2 black-60">{{ daytrip.date }}</h3>
+                </a>
+            </article>
+        {% empty %}
+        <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
+            <h3 class="f5 f4-ns mb0 black-90">No trips planned yet!</h3>
+        </article>
+        {% endfor %}
+    </section>
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'account_login' %}">Login Here</a>
