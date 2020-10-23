@@ -7,8 +7,8 @@
     {{ daytrip.description }}<br>
 </div><br>
 <div>
-    <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk%}"><button>Update Trip</button></a>
-    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
+    <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk%}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Trip</button></a>
+    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Delete Trip</button></a>
 </div><br>
 
 <div id='map' style='width: 400px; height: 300px;'></div>

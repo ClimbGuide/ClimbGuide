@@ -10,12 +10,12 @@
     {% endif %}
     <div>{{ user.bio }}</div>
     <div>
-        <a href="{% url 'socialaccount_connections' %}"><button>Manage Social Accounts</button></a>
-        <button id="button-one">Edit User Info</button>
+        <a href="{% url 'socialaccount_connections' %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Manage Social Accounts</button></a>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-one">Edit User Info</button>
     </div>
     <div>
-        <button id="button-two">Add Trip</button>
-        <button id="button-three">Add Point of Interest</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-two">Add Trip</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-three">Add Point of Interest</button>
     </div>
     <div id="form-one" class="hidden">
         <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data">

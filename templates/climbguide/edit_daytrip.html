@@ -7,16 +7,16 @@
     {{ daytrip.description }}<br>
 </div><br>
 <div>
-    <button id="button-one">Update Trip Information</button>
-    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button>Delete Trip</button></a>
+    <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit"id="button-one">Update Trip Information</button>
+    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Delete Trip</button></a>
 </div><br>
 <div id="form-one" class="hidden">
     <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <div>
-            <button type="submit">Update Trip</button>
-           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button>Cancel Update</button></a> 
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Trip</button>
+           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Cancel Update</button></a> 
         </div>
     </form>
 </div><br>
@@ -24,7 +24,7 @@
 <form action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
     <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
     <p>
-        <button type="submit">Search</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
     </p>
 </form>
 
@@ -54,7 +54,7 @@
                 </div>
                 {% endfor %}
         </div>
-        <button id="send-routes-button">Add Routes</button>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="send-routes-button">Add Routes</button>
     </div>  
 </div>
 
