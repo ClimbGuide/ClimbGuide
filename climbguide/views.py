@@ -12,7 +12,7 @@ import environ
 from .models import Route, Daytrip, Pointofinterest
 from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
-
+# Set env()
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False),)
@@ -22,27 +22,18 @@ environ.Env.read_env()
 # Views
 def home(request):
     route_info = []
-    mapbox_access_token = env("MAPBOX_KEY")
-    location_query = request.GET.get("location","")
-    route_type_query = request.GET.get("routetype","")
-
-    if location_query and route_type_query:
+    mapbox_access_token = env('MAPBOX_KEY')
+    location_q = request.GET.get("location","")
+    route_type_q = request.GET.get("route_type","")
+    rating_q = request.GET.get("rating", "")
+    
+    if location_q is not None:
         routes = Route.objects.annotate(
-            search=SearchVector("location")
-        ).filter(search=location_query).annotate(
-            search=SearchVector("route_type")
-        ).filter(search=route_type_query)
-    if location_query is not None:
-        routes = Route.objects.annotate(
-            search=SearchVector("location")
-        ).filter(search=location_query)
-    elif route_type_query is not None:
-        routes = Route.objects.annotate(
-            search=SearchVector("route_type")
-        ).filter(search=route_type_query)
+            search=SearchVector("location", "route_type", "rating")
+        ).filter(search=location_q).filter(search=route_type_q).filter(search=rating_q)
     else:
         routes = None
-    
+
     if routes is not None:
         for route in routes:
             route_info.append({
@@ -56,7 +47,12 @@ def home(request):
 
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
-        "route_info": route_info
+        "route_info": route_info,
+        "SearchQueryForm": SearchQueryForm,
+        "routes": routes,
+        "location_q": location_q or "",
+        "route_type_q": route_type_q or "",
+        "rating_q": rating_q or ""
     })
 
 
@@ -145,6 +141,7 @@ def daytrip_detail(request, daytrip_pk):
     return render(request, "climbguide/daytrip_detail.html", {
         "daytrip": daytrip,
         "owners": owners,
+        "routes": routes,
         "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
@@ -173,13 +170,17 @@ def edit_daytrip(request, daytrip_pk):
     pointsofinterest = Pointofinterest.objects.all()
     planned_pointofinterest = daytrip.points_of_interest.all()
     route_info = []
-    location_query = request.GET.get("location","")
-    if location_query is not None:
+    location_q = request.GET.get("location","")
+    route_type_q = request.GET.get("route_type","")
+    rating_q = request.GET.get("rating", "")
+    
+    if location_q is not None:
         routes = Route.objects.annotate(
-            search=SearchVector("location")
-        ).filter(search=location_query)
+            search=SearchVector("location", "route_type", "rating")
+        ).filter(search=location_q).filter(search=route_type_q).filter(search=rating_q)
     else:
         routes = None
+
     if routes is not None:
         for route in routes:
             route_info.append({
@@ -190,6 +191,7 @@ def edit_daytrip(request, daytrip_pk):
                 "route_type": route.route_type,
                 "rating": route.rating,
             })
+
     if request.method == "GET":
         form = DaytripForm(instance=daytrip)
     else:

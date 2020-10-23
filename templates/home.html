@@ -2,13 +2,54 @@
 {% block content %}
 <h2>Search Routes</h2>
 <form action="{% url 'home' %}" method="GET">
-    <input type="search" name="location" placeholder="Location" value="{{ location_query }}"/>
-    <input type="search" name="routetype" placeholder="Route Type" value="{{ route_type_query}}"/>
-    <p>
+    <p><label for="id_location">Route Location:</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
+    <p><label for="id_route_type">Route Type:</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
+    <option value="trad" selected>trad</option>
+    <option value="sport">sport</option>
+    <option value="boulder">boulder</option>
+    </select></p>
+    <p><label for="id_rating">Route Difficulty:</label> <select name="rating" id="id_rating" value="{{ rating_q }}">
+        <optgroup label="Trad/Sport Rating">
+            <option value="5.4" selected>5.4</option>
+            <option value="5.5">5.5</option>
+            <option value="5.6">5.6</option>
+            <option value="5.7">5.7</option>
+            <option value="5.8">5.8</option>
+            <option value="5.9">5.9</option>
+            <option value="5.10">5.10</option>
+            <option value="5.11">5.11</option>
+            <option value="5.12">5.12</option>
+            <option value="5.13">5.13</option>
+            <option value="5.14">5.14</option>
+            <option value="5.15">5.15</option>
+        </optgroup>
+        <optgroup label="Boulder Rating">
+            <option value="V0">V0</option>
+            <option value="V1">V1</option>
+            <option value="V2">V2</option>
+            <option value="V3">V3</option>
+            <option value="V4">V4</option>
+            <option value="V5">V5</option>
+            <option value="V6">V6</option>
+            <option value="V7">V7</option>
+            <option value="V8">V8</option>
+            <option value="V9">V9</option>
+            <option value="V10">V10</option>
+        </optgroup>
+        </select></p>
+    <div>
         <button type="submit">Search</button>
-    </p>
+    </div>
 </form>
 <div id='map' style='width: 400px; height: 300px;'></div>
+
+<ul>
+    {% for route in routes %}
+        <li>{{ route.name }} | {{ route.route_type }}</li>
+    {% empty %}
+        <div>Seach for routes!</div>
+    {% endfor %}
+</ul>
 
 {{ route_info|json_script:"route_info" }}
 
@@ -27,31 +68,23 @@ var map = new mapboxgl.Map({
     center: [-80.793457, 35.782169],
     zoom: 4,
 })
+// Fullscreen Feature
+map.addControl(new mapboxgl.FullscreenControl());
+// Add geolocate control to the map.
+map.addControl(
+    new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+    })
+);
 
 console.log("map loaded!")
 // Event starts as soon the page begins loading
 // Get data, load to map, set markers, and initalize bounding varibales
 document.addEventListener("DOMContentLoaded", (e) => {
     const route_info = JSON.parse(document.getElementById("route_info").textContent)
-    mapboxgl.accessToken = '{{mapbox_access_token}}';
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-80.793457, 35.782169],
-        zoom: 4,
-    })
-    // Fullscreen Feature
-        map.addControl(new mapboxgl.FullscreenControl());
-    // Add geolocate control to the map.
-        map.addControl(
-        new mapboxgl.GeolocateControl({
-        positionOptions: {
-        enableHighAccuracy: true
-    },
-        trackUserLocation: true
-    })
-    );
-    console.log("map loaded!")
     var latitudeList = []
     var longitudeList = []
     for (let i = 0; i < route_info.length; i++) {
