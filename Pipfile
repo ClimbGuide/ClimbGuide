@@ -20,6 +20,8 @@ django-imagekit = "*"
 django-allauth = "*"
 django-location-field = "*"
 django-mapbox-location-field = "*"
+boto3 = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.8"

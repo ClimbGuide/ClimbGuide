@@ -135,11 +135,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
         latitudeList.push(route.latitude)
         longitudeList.push(route.longitude)
         console.log(route.name)
-        var html =  `<div style="border-radius: 3px; width: 200px;">
-                        <h4 style="border-radius: 2px;">${route.name}</h4>
-                        <div>${route.route_type} | ${route.rating}</div>
-                        <a href="/routes/detail/${route.pk}" class="marker-popup">See the route!</a>
-                    </div>`
+        var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
+                <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
+                <div class="pa2 bt b--black-20">
+                <a class="f6 db link dark-blue hover-blue" href="#">${route.name}</a>
+                <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
+                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
+                </div>
+                </article>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
             offset: { "bottom" : [0, -10]},
