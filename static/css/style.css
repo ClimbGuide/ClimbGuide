@@ -41,3 +41,9 @@
     margin-bottom: .5rem;
     display: block;
 }
+
+#map {
+    border-style: double;
+    border-color: black;
+    border-width: thick;
+}
