@@ -228,6 +228,14 @@ def addroutes_to_daytrip(request, daytrip_pk):
     return JsonResponse({"RoutesAdded": True})
 
 
+@login_required
+def addlog_to_daytrip(request, daytrip_pk):
+    pass
+
+
+@login_required
+def deletelog_from_daytrip(request, daytrip_pk):
+    pass
 
 
 # Point of Interest
