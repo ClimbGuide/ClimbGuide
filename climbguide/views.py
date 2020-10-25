@@ -250,8 +250,22 @@ def addlog_to_daytrip(request, daytrip_pk):
 
 
 @login_required
+@csrf_exempt
+@require_POST
 def deletelog_from_daytrip(request, daytrip_pk):
-    pass
+    daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+    if request.method == "POST":
+        json_pk = json.loads(request.body)
+        log_pk = json_pk["pk"]
+        log = get_object_or_404(Log, pk=log_pk)
+        if request.user == log.owner:
+            log.delete()
+            return JsonResponse({"logDeleted": True})
+        else:
+            return JsonResponse({"notOwner": True})
+    
+
+
 
 
 # Point of Interest
