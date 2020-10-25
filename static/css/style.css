@@ -2,13 +2,13 @@
     display: none;
 }
 
-#route-planning-container {
+.flex-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-.route-planning-column {
+.flex-column {
     display: flex;
     flex-direction: column;
     flex-grow: 0;
