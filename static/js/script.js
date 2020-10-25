@@ -1,29 +1,35 @@
 // Event Handlers
-function showForm () {
+function showFormOne () {
     let formOne = document.querySelector("#form-one")
-    let buttonOne = document.querySelector("#button-one")
-    formOne.classList.remove("hidden")
-    buttonOne.classList.add("hidden")
+    if (formOne.classList.contains("hidden")) {
+        formOne.classList.remove("hidden")
+    } else {
+        formOne.classList.add("hidden")
+    }
 }
 
 function showFormTwo () {
     let formTwo = document.querySelector("#form-two")
-    let buttonTwo = document.querySelector("#button-two")
-    formTwo.classList.remove("hidden")
-    buttonTwo.classList.add("hidden")
+    if (formTwo.classList.contains("hidden")) {
+        formTwo.classList.remove("hidden")
+    } else {
+        formTwo.classList.add("hidden")
+    }
 }
 
 function showFormThree () {
     let formThree = document.querySelector("#form-three")
-    let buttonThree = document.querySelector("#button-three")
-    formThree.classList.remove("hidden")
-    buttonThree.classList.add("hidden")
+    if (formThree.classList.contains("hidden")) {
+        formThree.classList.remove("hidden")
+    } else {
+        formThree.classList.add("hidden")
+    }
 }
 
 // Event Listeners
 let buttonOne = document.querySelector("#button-one")
 if (buttonOne) {
-    buttonOne.addEventListener("click", showForm)
+    buttonOne.addEventListener("click", showFormOne)
 }
 
 let buttonTwo = document.querySelector("#button-two")
