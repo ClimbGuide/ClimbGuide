@@ -39,7 +39,7 @@ urlpatterns = [
     path('daytrips/delete/<int:daytrip_pk>', views.delete_daytrip, name="delete_daytrip"),
     path('daytrips/detail/<int:daytrip_pk>/addroutes/', views.addroutes_to_daytrip, name="addroutes_to_daytrip"),
     path('daytrips/detail/<int:daytrip_pk>/addlog/', views.addlog_to_daytrip, name="addlog_to_daytrip"),
-    path('daytrips/detail/<int:daytrip_pk>/deletelog', views.deletelog_from_daytrip, name="deletelog_from_daytrip"),
+    path('daytrips/detail/<int:daytrip_pk>/deletelog/', views.deletelog_from_daytrip, name="deletelog_from_daytrip"),
 
         # pointofinterest
     path('pointsofinterest/add/', views.add_pointofinterest, name="add_pointofinterest"),
