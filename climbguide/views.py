@@ -9,7 +9,7 @@ import json
 import environ
 
 # Project Files Imports 
-from .models import Route, Daytrip, Pointofinterest, Log
+from .models import Route, Daytrip, Pointofinterest, Log, clean_location
 from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
 # Set env()
@@ -73,6 +73,7 @@ def search(request):
 def route_detail(request, route_pk):
     route = get_object_or_404(Route, pk=route_pk)
     photos = route.photos.all()
+    locations = clean_location(route.location)
     if route.pitches == '':
         pitches = False
     else:
@@ -81,6 +82,7 @@ def route_detail(request, route_pk):
         "route": route,
         "photos": photos,
         "pitches": pitches,
+        "locations" : locations,
         "PhotoForm": PhotoForm
     })
 

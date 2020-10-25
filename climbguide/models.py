@@ -3,6 +3,8 @@ from mapbox_location_field.models import LocationField, AddressAutoHiddenField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
 from users.models import User
+import string
+
 
 class Route(models.Model):
     mountainproject_id = models.CharField(max_length=100, null=True, blank=True)
@@ -84,3 +86,14 @@ class Photo(models.Model):
     point_of_interest = models.ForeignKey(to=Pointofinterest, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
+
+def clean_location(self):
+    locations = self.strip('][').split(', ')
+    cleaned_locations = []
+    for location in locations:
+        clean_location = location.strip("'")
+        cleaned_locations.append(clean_location)
+    return cleaned_locations 
+                
+                
