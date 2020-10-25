@@ -64,8 +64,8 @@
 
 <div id='map' style='width: 400px; height: 300px;'></div>
 <p>Drag over routes to add them to your trip!</p>
-<div id="route-planning-container">
-    <div class="route-planning-column">
+<div class="flex-container">
+    <div class="flex-column">
         <h3 class="f4 bold center mw5">Routes</h3>
         <ul id="container1" class="list pl0 ml0 center mw5 ba b--light-silver br3">
             {% for route in routes %}
@@ -79,7 +79,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="route-planning-column">
+    <div class="flex-column">
         <h3 class="f4 bold center mw5">{{ daytrip.title }} Routes</h3>
         <ul id="container2" data-daytripid="{{ daytrip.id }}" class="list pl0 ml0 center mw5 ba b--light-silver br3">
                 {% for route in planned_routes %}

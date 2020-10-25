@@ -9,7 +9,7 @@ import json
 import environ
 
 # Project Files Imports 
-from .models import Route, Daytrip, Pointofinterest
+from .models import Route, Daytrip, Pointofinterest, Log
 from .forms import DaytripForm, PhotoForm, PointofinterestForm, LocationForm
 
 # Set env()
@@ -127,6 +127,7 @@ def daytrip_detail(request, daytrip_pk):
     routes = daytrip.routes.all()
     owners = daytrip.owners.all()
     pointsofinterest = daytrip.points_of_interest.all()
+    logs = daytrip.logs.all()
     mapbox_access_token = env("MAPBOX_KEY")
     for route in routes:
         route_info.append({
@@ -141,6 +142,7 @@ def daytrip_detail(request, daytrip_pk):
         "daytrip": daytrip,
         "owners": owners,
         "routes": routes,
+        "logs" : logs,
         "route_info": route_info,
         "mapbox_access_token": mapbox_access_token
     })
@@ -229,8 +231,22 @@ def addroutes_to_daytrip(request, daytrip_pk):
 
 
 @login_required
+@csrf_exempt
+@require_POST
 def addlog_to_daytrip(request, daytrip_pk):
-    pass
+    daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+    if request.user in daytrip.owners.all():
+        if request.method == "POST":
+            json_log = json.loads(request.body)
+            log_text = json_log["log"]
+            Log.objects.create(
+                text=log_text,
+                owner=request.user,
+                daytrip=daytrip
+            )
+            return JsonResponse({"logAdded": True})
+    else:
+        return JsonResponse({"notOwner": True})
 
 
 @login_required

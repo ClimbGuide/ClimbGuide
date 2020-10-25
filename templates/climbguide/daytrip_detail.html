@@ -12,14 +12,40 @@
 </div><br>
 
 <div id='map' style='width: 400px; height: 300px;'></div>
-<h3 class="f4 bold center mw5">Planned Routes</h3>
-<ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
-    {% for route in routes %}
-        <li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li>
-    {% empty %}
-        <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><li class="ph3 pv2 bb b--light-silver">Add Routes</li></a>
-    {% endfor %}
-</ul>
+<div class="flex-container">
+    <div class="flex-column">
+        <h3 class="f4 bold center mw5">Planned Routes</h3>
+        <ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
+        {% for route in routes %}
+            <li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li>
+        {% empty %}
+            <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><li class="ph3 pv2 bb b--light-silver">Add Routes</li></a>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="flex-column">
+        <h3>Log</h3>
+        <button id="button-one">Write Log Entry</button>
+        <div id="form-one" class="hidden">
+            <form id="daytrip-log-form" data-daytripid="{{ daytrip.id }}" class="form-style">
+                <div>
+                    <label for="log">Log Entry</label>
+                    <textarea id="log" placeholder="Write about your trip!"></textarea>
+                </div>   
+                <div>
+                    <button type="submit">Submit Log</button>
+                </div>
+            </form>
+        </div>
+        <ul id="current-logs" class="list pl0 ml0 center mw5 ba b--light-silver br3">
+        {% for log in logs %}
+            <li class="ph3 pv2 bb b--light-silver">{{ log.text }}<h6>{{ log.date_added }}</h6></li>
+        {% empty %}
+            <li id="no-logs-message">Write an entry!</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
 
 {{ route_info|json_script:"route_info" }}
 
@@ -102,6 +128,51 @@
             ])
             console.log("bounds updated!")
         })
+
+    // Log
+    const log = document.querySelector("#log")
+    const logForm = document.querySelector("#daytrip-log-form")
+    const currentLogs = document.querySelector("#current-logs")
+    const emptyLogMessage = document.querySelector("#no-logs-message")
+
+    logForm.addEventListener("submit", function (event) {
+        event.preventDefault()
+        let logData = log.value
+        console.log(logData)
+        let logObject = makeLogObject(logData)
+        console.log(logObject)
+        sendLog(logObject)
+
+    })
+
+    var makeLogObject = function (logData) {
+        return {
+            log : logData
+        }
+    }
+
+    var sendLog = function (logObject) {
+        const daytrip_pk = logForm.dataset.daytripid
+        const url = `/daytrips/detail/${daytrip_pk}/addlog/`
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(logObject),
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            if (emptyLogMessage) {
+                emptyLogMessage.classList.add("hidden")
+            }
+            let logEntry = document.createElement("li")
+            logEntry.innerHTML = data.logData
+            currentLogs.appendChild(logEntry)
+        })
+    }
 </script>
 {% endblock scripts%}
 {% endblock %}
