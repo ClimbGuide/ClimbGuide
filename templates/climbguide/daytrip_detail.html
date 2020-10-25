@@ -139,9 +139,19 @@
         event.preventDefault()
         let logData = log.value
         console.log(logData)
-        let logObject = makeLogObject(logData)
+        var logObject = makeLogObject(logData)
         console.log(logObject)
         sendLog(logObject)
+
+        if ({"logAdded": true}) {
+            if (emptyLogMessage) {
+                emptyLogMessage.classList.add("hidden")
+            }
+            let logEntry = document.createElement("li")
+            logEntry.innerHTML = `${logObject["log"]} <h6>{{ log.date_added }}</h6>`
+            currentLogs.appendChild(logEntry)
+            log.value = ""
+        }
 
     })
 
@@ -163,15 +173,7 @@
             }
         })
         .then(res => res.json())
-        .then(data => {
-            console.log(data)
-            if (emptyLogMessage) {
-                emptyLogMessage.classList.add("hidden")
-            }
-            let logEntry = document.createElement("li")
-            logEntry.innerHTML = data.logData
-            currentLogs.appendChild(logEntry)
-        })
+        .then(data => console.log(data))
     }
 </script>
 {% endblock scripts%}
