@@ -64,13 +64,17 @@
         center: [-80.793457, 35.782169],
         zoom: 4,
     })
+    // Compass
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-left');
     // Fullscreen Feature
     map.addControl(new mapboxgl.FullscreenControl());
     // Add geolocate control to the map.
     map.addControl(
         new mapboxgl.GeolocateControl({
         positionOptions: {
-            enableHighAccuracy: true
+            enableHighAccuracy: true,
+            showAccuracyCircle: true
         },
         trackUserLocation: true
         })
