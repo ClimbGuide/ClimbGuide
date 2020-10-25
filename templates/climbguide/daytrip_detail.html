@@ -29,8 +29,8 @@
         <div id="form-one" class="hidden">
             <form id="daytrip-log-form" data-daytripid="{{ daytrip.id }}" class="form-style">
                 <div>
-                    <label for="log">Log Entry</label>
-                    <textarea id="log" placeholder="Write about your trip!"></textarea>
+                    <label for="log-input">Log Entry</label>
+                    <textarea id="log-input" placeholder="Write about your trip!"></textarea>
                 </div>   
                 <div>
                     <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Submit Log</button>
@@ -39,7 +39,7 @@
         </div>
         <ul id="current-logs" class="list pl0 ml0 center mw5 ba b--light-silver br3">
         {% for log in logs %}
-            <li class="ph3 pv2 bb b--light-silver">{{ log.text }}<h6>{{ log.date_added }} <a id="delete" class="no-underline" data-logid="{{ log.id }}" href="#">&#128465;</a></h6></li>
+            <li class="ph3 pv2 bb b--light-silver">{{ log.text }}<h6>{{ log.date_added }} <a class="delete" class="no-underline" data-logid="{{ log.id }}" href="#">&#128465;</a></h6></li>
         {% empty %}
             <li id="no-logs-message">Write an entry!</li>
         {% endfor %}
@@ -58,7 +58,7 @@
     var maxLatitude
     // Load map and set to variable map
     mapboxgl.accessToken = '{{mapbox_access_token}}';
-    var map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [-80.793457, 35.782169],
@@ -130,11 +130,10 @@
         })
 
     // Log Feature
-    const log = document.querySelector("#log")
+    const log = document.querySelector("#log-input")
     const logForm = document.querySelector("#daytrip-log-form")
     const currentLogs = document.querySelector("#current-logs")
     const emptyLogMessage = document.querySelector("#no-logs-message")
-    const deleteLogButton = document.querySelectorAll("#delete")
     
     // Event to add a log
     logForm.addEventListener("submit", function (event) {
@@ -179,17 +178,19 @@
     }
 
 // Event to delete a log
-    deleteLogButton.addEventListener("click", function (event) {
-        event.preventDefault()
-        let log_pk = deleteLogButton.dataset.logid
-        console.log(log_pk)
-        var pkObject = makePkObject(log_pk)
-        console.log(pkObject)
-        sendLogPk(pkObject)
+    currentLogs.querySelectorAll(".delete").forEach(item => {
+        item.addEventListener("click", function (event) {
+            event.preventDefault()
+            let log_pk = item.dataset.logid
+            console.log(log_pk)
+            var pkObject = makePkObject(log_pk)
+            console.log(pkObject)
+            sendLogPk(pkObject)
 
-        if ({"logDeleted": true}) {
-            deleteLogButton.parentElement.parentElement.classList.add("hidden")
-        }
+            if ({"logDeleted": true}) {
+                item.parentElement.parentElement.classList.add("hidden")
+            }
+        })
     })
 
     var makePkObject = function (log_pk) {
@@ -201,17 +202,17 @@
     var sendLogPk = function (pkObject) {
         var daytrip_pk = logForm.dataset.daytripid
         console.log(daytrip_pk)
-        // var url = `/daytrips/detail/${daytrip_pk}/deletelog/`
-        // fetch(url, {
-        //     method: "POST",
-        //     body: JSON.stringify(pkObject),
-        //     headers: {
-        //         'Content-Type': 'application/json; charset=UTF-8',
-        //         'Accept': 'application/json; charset=UTF-8'
-        //     }
-        // })
-        // .then(res => res.json())
-        // .then(data => console.log(data))
+        var url = `/daytrips/detail/${daytrip_pk}/deletelog/`
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(pkObject),
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8'
+            }
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
     }
 </script>
 {% endblock scripts%}
