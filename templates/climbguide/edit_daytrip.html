@@ -244,10 +244,10 @@ sendRoutesButton.addEventListener("click", function (event) {
         }
         console.log(jsonObj)
         sendRoutePks(jsonObj)
-    }
-    if ({"RoutesAdded": true}) {
+        if ({"RoutesAdded": true}) {
         window.location.href = "{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"
-    }
+        }
+    } 
 })
 
 var makeRouteObject = function (route) {
