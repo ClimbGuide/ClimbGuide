@@ -11,7 +11,7 @@
     <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Delete Trip</button></a>
 </div><br>
 
-<div id='map' style='width: 400px; height: 300px;'></div>
+<div id='map' style='width: 500px; height: 450px;'></div>
 <div class="flex-container">
     <div class="flex-column">
         <h3 class="f4 bold center mw5">Planned Routes</h3>
@@ -65,13 +65,17 @@
         center: [-80.793457, 35.782169],
         zoom: 4,
     })
+    // Compass
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'top-left');
     // Fullscreen Feature
     map.addControl(new mapboxgl.FullscreenControl());
     // Add geolocate control to the map.
     map.addControl(
         new mapboxgl.GeolocateControl({
         positionOptions: {
-            enableHighAccuracy: true
+            enableHighAccuracy: true,
+            showAccuracyCircle: true
         },
         trackUserLocation: true
         })
@@ -92,7 +96,7 @@
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
                 <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
                 <div class="pa2 bt b--black-20">
-                <a class="f6 db link dark-blue hover-blue" href="#">${poi.name}</a>
+                <p class="f6 dark-blue mv1">${poi.name}</p>
                 <p class="f6 gray mv1">${poi.category}</p>
                 <p class="f6 gray mv1">${poi.information}</p>
                 <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${poi.pk}">See this Point of Interest!</a>
@@ -122,7 +126,7 @@
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
                 <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
                 <div class="pa2 bt b--black-20">
-                <a class="f6 db link dark-blue hover-blue" href="#">${route.name}</a>
+                    <p class="f6 dark-blue mv1">${route.name}</p>
                 <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
                 <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
                 </div>

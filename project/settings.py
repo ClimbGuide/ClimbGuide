@@ -52,15 +52,17 @@ INSTALLED_APPS = [
     'django_extensions',
     'mapbox_location_field',
     'imagekit',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
     'storages',
 
     # Project-specific
     'users',
     'climbguide',
+
+    #all-auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
 ]
     # Locate User for POI
 MAPBOX_KEY = env('MAPBOX_KEY')
@@ -98,7 +100,8 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates',), os.path.join(BASE_DIR, 'templates', 'users')],
+        
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

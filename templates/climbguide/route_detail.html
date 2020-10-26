@@ -17,7 +17,7 @@
     <div>{{ location }}</div>
     {% endfor %}
 </div><br>
-<button id="button-one">Sumbit Photo</button>
+<button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-one">Submit Photo</button>
 <div id="form-one" class="hidden">
     <form class="form-style" action="{% url 'addphoto_to_route' route_pk=route.pk %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}

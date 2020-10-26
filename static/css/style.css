@@ -47,3 +47,8 @@
     border-color: black;
     border-width: thick;
 }
+
+#content {
+    max-width: 500px;
+    margin: auto;
+}
