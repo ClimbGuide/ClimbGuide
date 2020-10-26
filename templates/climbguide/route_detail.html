@@ -10,9 +10,12 @@
 <div>
     {{ route.route_type }} | {{ route.rating }}<br>
     {% if pitches == True %}
-    {{ route.pitches }} pitches<br>
+    {{ route.pitches }} pitches<br><br>
     {% endif %}
-    {{ route.location }}
+    <div><b>Locations</b></div>
+    {% for location in locations %}
+    <div>{{ location }}</div>
+    {% endfor %}
 </div><br>
 <button id="button-one">Sumbit Photo</button>
 <div id="form-one" class="hidden">
