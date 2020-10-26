@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         let poi = poi_info[i]
         console.log(poi.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
+                <img src="" class="db" alt="Photo of Route" />
                 <div class="pa2 bt b--black-20">
                 <p class="f6 dark-blue mv1">${poi.name}</p>
                 <p class="f6 gray mv1">${poi.category}</p>
@@ -133,9 +133,9 @@ document.addEventListener("DOMContentLoaded", (e) => {
         longitudeList.push(route.longitude)
         console.log(route.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
+                <img src="https://images.unsplash.com/photo-1578763397601-ad069af37f14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1056&q=80">
                 <div class="pa2 bt b--black-20">
-                    <p class="f6 dark-blue mv1">${route.name}</p>
+                <p class="f6 dark-blue mv1">${route.name}</p>
                 <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
                 <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
                 </div>

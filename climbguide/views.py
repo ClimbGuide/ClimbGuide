@@ -76,6 +76,7 @@ def home(request):
         "route_info": route_info,
         "poi_info": poi_info,
         "routes": routes,
+        "pointsofinterest": pointsofinterest,
         "location_q": location_q or "",
         "route_type_q": route_type_q or "",
         "rating_q": rating_q or ""
