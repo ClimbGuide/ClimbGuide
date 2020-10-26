@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <h2>Update {{ daytrip.title }}</h2>
 <div>
@@ -97,7 +97,8 @@
 {{ route_info|json_script:"route_info" }}
 {{ poi_info|json_script:"poi_info"}}
 
-{% block scripts %}
+
+<script src="{% static 'vendor/dragula/dragula.min.js' %}"></script>
 <script>
 // Initalize bounding variables
 var minLongitude
@@ -143,7 +144,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 <a class="f6 db link dark-blue hover-blue" href="#">${poi.name}</a>
                 <p class="f6 gray mv1">${poi.category}</p>
                 <p class="f6 gray mv1">${poi.information}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${poi.pk}">See this Point of Interest!</a>
+                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
                 </div>
                 </article>`
         var customPopUp = new mapboxgl.Popup({
@@ -230,22 +231,22 @@ var plannedRoutesContainer = document.querySelector("#container2")
 
 sendRoutesButton.addEventListener("click", function (event) {
     event.preventDefault()
-    if (confirm("Are you finished adding routes?")) {
-        var route_List = []
-        for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
+    var route_List = []
+    for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
         route.pk = route.dataset.routeid
         console.log(route.pk)
         let route_obj = makeRouteObject(route)
         route_List.push(route_obj) 
-        }
-        console.log(route_List)
-        var jsonObj = {
-            routes : route_List
-        }
-        console.log(jsonObj)
-        sendRoutePks(jsonObj)
+    }
+    console.log(route_List)
+    var jsonObj = {
+        routes : route_List
+    }
+    console.log(jsonObj)
+    sendRoutePks(jsonObj)
+    if (confirm("Are you finished adding routes?")) {
         if ({"RoutesAdded": true}) {
-        window.location.href = "{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"
+            window.location.href = "{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"
         }
     } 
 })
@@ -271,5 +272,4 @@ var sendRoutePks = function (jsonObj) {
 }
 
 </script>
-{% endblock scripts %}
 {% endblock %}

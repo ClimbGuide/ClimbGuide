@@ -53,7 +53,6 @@
 {{ route_info|json_script:"route_info" }}
 {{ poi_info|json_script:"poi_info" }}
 
-{% block scripts %}
 <script>
 // Initalize bounding variables
 var minLongitude
@@ -99,7 +98,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 <a class="f6 db link dark-blue hover-blue" href="#">${poi.name}</a>
                 <p class="f6 gray mv1">${poi.category}</p>
                 <p class="f6 gray mv1">${poi.information}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${poi.pk}">See this Point of Interest!</a>
+                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
                 </div>
                 </article>`
         var customPopUp = new mapboxgl.Popup({
@@ -165,5 +164,4 @@ window.addEventListener('load', (e) => {
         console.log("bounds updated!")
     })
 </script>
-{% endblock scripts %}
 {% endblock %}
