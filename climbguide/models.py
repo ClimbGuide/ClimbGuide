@@ -1,8 +1,11 @@
 from django.db import models
+from django.db.models import Q
 from mapbox_location_field.models import LocationField, AddressAutoHiddenField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
 from users.models import User
+import string
+
 
 class Route(models.Model):
     mountainproject_id = models.CharField(max_length=100, null=True, blank=True)
@@ -18,7 +21,17 @@ class Route(models.Model):
     date_updated = models.DateField(auto_now=True)
 
 
+class PoiQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if user.is_authenticated:
+            pois = self.filter(Q(public=True) | Q(owner=user))
+        else:
+            pois = self.filter(public=True)
+        return pois
+
 class Pointofinterest(models.Model):
+    objects = PoiQuerySet.as_manager()
+
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="pointsofinterest", null=True, blank=True)
     name = models.CharField(max_length=100, null=False, blank=False)
     information = models.CharField(max_length=250, null=True, blank=True)
@@ -84,3 +97,14 @@ class Photo(models.Model):
     point_of_interest = models.ForeignKey(to=Pointofinterest, on_delete=models.CASCADE, related_name="photos", null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
+
+def clean_location(self):
+    locations = self.strip('][').split(', ')
+    cleaned_locations = []
+    for location in locations:
+        clean_location = location.strip("'")
+        cleaned_locations.append(clean_location)
+    return cleaned_locations 
+                
+                
