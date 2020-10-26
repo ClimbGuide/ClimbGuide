@@ -120,6 +120,20 @@ def addphoto_to_route(request, route_pk):
     })
 
 
+@login_required
+@csrf_exempt
+@require_POST
+def addcomment_to_route(self, route_pk):
+    pass
+
+
+@login_required
+@csrf_exempt
+@require_POST
+def deletecomment_from_route(self, route_pk):
+    pass
+
+
 # Daytrip
 @login_required
 def add_daytrip(request):

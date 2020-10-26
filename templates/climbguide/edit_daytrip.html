@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <h2>Update {{ daytrip.title }}</h2>
 <div>
@@ -22,46 +22,48 @@
     </form>
 </div>
 
-<form class="form-style" action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
-    <p><label for="id_location">Route Location:</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
-    <p><label for="id_route_type">Route Type:</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
-    <option value="trad" selected>trad</option>
-    <option value="sport">sport</option>
-    <option value="boulder">boulder</option>
-    </select></p>
-    <p><label for="id_rating">Route Difficulty:</label> <select name="rating" id="id_rating" value="{{ rating_q }}">
-        <optgroup label="Trad/Sport Rating">
-            <option value="5.4" selected>5.4</option>
-            <option value="5.5">5.5</option>
-            <option value="5.6">5.6</option>
-            <option value="5.7">5.7</option>
-            <option value="5.8">5.8</option>
-            <option value="5.9">5.9</option>
-            <option value="5.10">5.10</option>
-            <option value="5.11">5.11</option>
-            <option value="5.12">5.12</option>
-            <option value="5.13">5.13</option>
-            <option value="5.14">5.14</option>
-            <option value="5.15">5.15</option>
-        </optgroup>
-        <optgroup label="Boulder Rating">
-            <option value="V0">V0</option>
-            <option value="V1">V1</option>
-            <option value="V2">V2</option>
-            <option value="V3">V3</option>
-            <option value="V4">V4</option>
-            <option value="V5">V5</option>
-            <option value="V6">V6</option>
-            <option value="V7">V7</option>
-            <option value="V8">V8</option>
-            <option value="V9">V9</option>
-            <option value="V10">V10</option>
-        </optgroup>
+<div>
+    <form class="form-style" action="{% url 'home' %}" method="GET">
+        <p><label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas"></p>
+        <p><label for="id_route_type">Route Type</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
+        <option value="trad" selected>trad</option>
+        <option value="sport">sport</option>
+        <option value="boulder">boulder</option>
         </select></p>
+        <p><label for="id_rating">Route Difficulty</label> <select name="rating" id="id_rating" value="{{ rating_q }}">
+            <optgroup label="Trad/Sport Rating">
+                <option value="5.4" selected>5.4</option>
+                <option value="5.5">5.5</option>
+                <option value="5.6">5.6</option>
+                <option value="5.7">5.7</option>
+                <option value="5.8">5.8</option>
+                <option value="5.9">5.9</option>
+                <option value="5.10">5.10</option>
+                <option value="5.11">5.11</option>
+                <option value="5.12">5.12</option>
+                <option value="5.13">5.13</option>
+                <option value="5.14">5.14</option>
+                <option value="5.15">5.15</option>
+            </optgroup>
+            <optgroup label="Boulder Rating">
+                <option value="V0">V0</option>
+                <option value="V1">V1</option>
+                <option value="V2">V2</option>
+                <option value="V3">V3</option>
+                <option value="V4">V4</option>
+                <option value="V5">V5</option>
+                <option value="V6">V6</option>
+                <option value="V7">V7</option>
+                <option value="V8">V8</option>
+                <option value="V9">V9</option>
+                <option value="V10">V10</option>
+            </optgroup>
+            </select></p>
         <div>
-            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Search</button>
+            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Search</button>
         </div>
-</form>
+    </form>
+</div>
 
 <div id='map' style='width: 500px; height: 450px;'></div>
 <p>Drag over routes to add them to your trip!</p>
@@ -98,7 +100,8 @@
 {{ route_info|json_script:"route_info" }}
 {{ poi_info|json_script:"poi_info"}}
 
-{% block scripts %}
+
+<script src="{% static 'vendor/dragula/dragula.min.js' %}"></script>
 <script>
 // Initalize bounding variables
 var minLongitude
@@ -148,7 +151,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 <p class="f6 dark-blue mv1">${poi.name}</p>
                 <p class="f6 gray mv1">${poi.category}</p>
                 <p class="f6 gray mv1">${poi.information}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${poi.pk}">See this Point of Interest!</a>
+                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
                 </div>
                 </article>`
         var customPopUp = new mapboxgl.Popup({
@@ -235,22 +238,22 @@ var plannedRoutesContainer = document.querySelector("#container2")
 
 sendRoutesButton.addEventListener("click", function (event) {
     event.preventDefault()
-    if (confirm("Are you finished adding routes?")) {
-        var route_List = []
-        for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
+    var route_List = []
+    for (var route of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
         route.pk = route.dataset.routeid
         console.log(route.pk)
         let route_obj = makeRouteObject(route)
         route_List.push(route_obj) 
-        }
-        console.log(route_List)
-        var jsonObj = {
-            routes : route_List
-        }
-        console.log(jsonObj)
-        sendRoutePks(jsonObj)
+    }
+    console.log(route_List)
+    var jsonObj = {
+        routes : route_List
+    }
+    console.log(jsonObj)
+    sendRoutePks(jsonObj)
+    if (confirm("Are you finished adding routes?")) {
         if ({"RoutesAdded": true}) {
-        window.location.href = "{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"
+            window.location.href = "{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"
         }
     } 
 })
@@ -276,5 +279,4 @@ var sendRoutePks = function (jsonObj) {
 }
 
 </script>
-{% endblock scripts %}
 {% endblock %}

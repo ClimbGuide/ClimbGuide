@@ -50,7 +50,6 @@
 {{ route_info|json_script:"route_info" }}
 {{ poi_info|json_script:"poi_info" }}
 
-{% block scripts %}
 <script>
     // Initalize bounding variables
     var minLongitude
@@ -99,7 +98,7 @@
                 <p class="f6 dark-blue mv1">${poi.name}</p>
                 <p class="f6 gray mv1">${poi.category}</p>
                 <p class="f6 gray mv1">${poi.information}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${poi.pk}">See this Point of Interest!</a>
+                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
                 </div>
                 </article>`
         var customPopUp = new mapboxgl.Popup({
@@ -171,6 +170,15 @@
     const currentLogs = document.querySelector("#current-logs")
     const emptyLogMessage = document.querySelector("#no-logs-message")
     
+    // Get date and time
+    var currentdate = new Date() 
+    var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds()
+
     // Event to add a log
     logForm.addEventListener("submit", function (event) {
         event.preventDefault()
@@ -185,7 +193,8 @@
                 emptyLogMessage.classList.add("hidden")
             }
             let logEntry = document.createElement("li")
-            logEntry.innerHTML = `${logObject["log"]} <h6>{{ log.date_added }}</h6>`
+            logEntry.innerHTML = `${logObject["log"]} <h6>${datetime} &#128465;</h6>`
+            logEntry.classList.add("ph3", "pv2", "bb", "b--light-silver")
             currentLogs.appendChild(logEntry)
             log.value = ""
         }
@@ -251,5 +260,4 @@
         .then(data => console.log(data))
     }
 </script>
-{% endblock scripts%}
 {% endblock %}
