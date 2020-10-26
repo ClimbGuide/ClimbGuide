@@ -167,6 +167,15 @@
     const currentLogs = document.querySelector("#current-logs")
     const emptyLogMessage = document.querySelector("#no-logs-message")
     
+    // Get date and time
+    var currentdate = new Date() 
+    var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds()
+
     // Event to add a log
     logForm.addEventListener("submit", function (event) {
         event.preventDefault()
@@ -181,7 +190,8 @@
                 emptyLogMessage.classList.add("hidden")
             }
             let logEntry = document.createElement("li")
-            logEntry.innerHTML = `${logObject["log"]} <h6>{{ log.date_added }}</h6>`
+            logEntry.innerHTML = `${logObject["log"]} <h6>${datetime} &#128465;</h6>`
+            logEntry.classList.add("ph3", "pv2", "bb", "b--light-silver")
             currentLogs.appendChild(logEntry)
             log.value = ""
         }
