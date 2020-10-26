@@ -29,10 +29,22 @@ def home(request):
     route_type_q = request.GET.get("route_type","")
     rating_q = request.GET.get("rating", "")
     
-    if location_q is not None:
+    if location_q is not None and route_type_q != "" and rating_q != "":
         routes = Route.objects.annotate(
             search=SearchVector("location", "route_type", "rating")
         ).filter(search=location_q).filter(search=route_type_q).filter(search=rating_q)
+    elif location_q is not None and route_type_q != "":
+        routes = Route.objects.annotate(
+            search=SearchVector("location", "route_type")
+        ).filter(search=location_q).filter(search=route_type_q)
+    elif location_q is not None and rating_q != "":
+        routes = Route.objects.annotate(
+            search=SearchVector("location", "rating")
+        ).filter(search=location_q).filter(search=rating_q)
+    elif location_q is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_q)
     else:
         routes = None
 
@@ -219,10 +231,22 @@ def edit_daytrip(request, daytrip_pk):
     route_type_q = request.GET.get("route_type","")
     rating_q = request.GET.get("rating", "")
     
-    if location_q is not None:
+    if location_q is not None and route_type_q != "" and rating_q != "":
         routes = Route.objects.annotate(
             search=SearchVector("location", "route_type", "rating")
         ).filter(search=location_q).filter(search=route_type_q).filter(search=rating_q)
+    elif location_q is not None and route_type_q != "":
+        routes = Route.objects.annotate(
+            search=SearchVector("location", "route_type")
+        ).filter(search=location_q).filter(search=route_type_q)
+    elif location_q is not None and rating_q != "":
+        routes = Route.objects.annotate(
+            search=SearchVector("location", "rating")
+        ).filter(search=location_q).filter(search=rating_q)
+    elif location_q is not None:
+        routes = Route.objects.annotate(
+            search=SearchVector("location")
+        ).filter(search=location_q)
     else:
         routes = None
 
