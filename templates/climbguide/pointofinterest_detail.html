@@ -16,7 +16,6 @@
 <div>
     {{ pointofinterest.get_category_display }}<br>
     {{ pointofinterest.information }}
-    {{ pointofinterest.location.location }}
 </div><br>
 {% if user.is_authenticated and user == pointofinterest.owner %}
 <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit" id="button-one">Edit Point of Interest</button>
