@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from mapbox_location_field.models import LocationField, AddressAutoHiddenField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
@@ -20,7 +21,17 @@ class Route(models.Model):
     date_updated = models.DateField(auto_now=True)
 
 
+class PoiQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if user.is_authenticated:
+            pois = self.filter(Q(public=True) | Q(owner=user))
+        else:
+            pois = self.filter(public=True)
+        return pois
+
 class Pointofinterest(models.Model):
+    objects = PoiQuerySet.as_manager()
+
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="pointsofinterest", null=True, blank=True)
     name = models.CharField(max_length=100, null=False, blank=False)
     information = models.CharField(max_length=250, null=True, blank=True)
