@@ -193,7 +193,7 @@
                 emptyLogMessage.classList.add("hidden")
             }
             let logEntry = document.createElement("li")
-            logEntry.innerHTML = `${logObject["log"]} <h6>${datetime} &#128465;</h6>`
+            logEntry.innerHTML = `${logObject["log"]} <h6>{% now "DATETIME_FORMAT" %} &#128465;</h6>`
             logEntry.classList.add("ph3", "pv2", "bb", "b--light-silver")
             currentLogs.appendChild(logEntry)
             log.value = ""
