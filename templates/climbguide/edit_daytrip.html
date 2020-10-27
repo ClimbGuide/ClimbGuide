@@ -97,7 +97,7 @@
                 <li class="ph3 pv2 bb b--light-silver">Add a Route</li>
                 {% endfor %}
             </ul>
-        <div><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="send-routes-button">Add Routes</button></div>
+        <div><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="send-routes-button">Sumbit New Route List</button></div>
     </div>  
 </div>
 
@@ -292,6 +292,7 @@ mapBox.addEventListener("DOMNodeInserted", function(event) {
     mapBox.querySelectorAll(".add-route-button").forEach(item => {
         item.addEventListener("click", function (event) {
             console.log("clicked!")
+            var appended
             route_pk = item.dataset.idroute
             console.log(route_pk)
             document.querySelector("#container1").querySelectorAll(".unplanned").forEach(item => {
@@ -301,10 +302,13 @@ mapBox.addEventListener("DOMNodeInserted", function(event) {
                     console.log(`We are both ${pk}`)
                     item.id = "plannedRoute"
                     document.querySelector("#container2").appendChild(item)
-                    console.log("appended!")
-
+                    appended = true
+                    console.log(appended)
                 }
             })
+            if (appended === true) {
+                item.parentElement.innerHTML = "<div class='f6 gray mv1'>Route has been added to your list!</div><div class='f6 gray mv1'>Don't forget to submit &#9968; &#128512;</div>"
+            }
         })
     })
 })
