@@ -50,26 +50,49 @@ def home(request):
 
     if routes is not None:
         for route in routes:
-            route_info.append({
-                "name": route.name,
-                "pk": route.pk,
-                "longitude": route.longitude,
-                "latitude": route.latitude,
-                "route_type": route.route_type,
-                "rating": route.rating,
-            })
+            if route.photos.first():
+                route_info.append({
+                    "name": route.name,
+                    "pk": route.pk,
+                    "longitude": route.longitude,
+                    "latitude": route.latitude,
+                    "route_type": route.route_type,
+                    "rating": route.rating,
+                    "photo": route.photos.first().photo_thumb.url,
+                })
+            else:
+                route_info.append({
+                    "name": route.name,
+                    "pk": route.pk,
+                    "longitude": route.longitude,
+                    "latitude": route.latitude,
+                    "route_type": route.route_type,
+                    "rating": route.rating,
+                    "photo": "https://images.unsplash.com/photo-1578763397601-ad069af37f14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1056&q=80",
+                })
 
     if pointsofinterest is not None:
         for poi in pointsofinterest:
-            poi_info.append({
-                "name": poi.name,
-                "pk": poi.pk,
-                "longitude": poi.longitude,
-                "latitude": poi.latitude,
-                "category": poi.category,
-                "information": poi.information,
-
-            })
+            if poi.photos.first():
+                poi_info.append({
+                    "name": poi.name,
+                    "pk": poi.pk,
+                    "longitude": poi.longitude,
+                    "latitude": poi.latitude,
+                    "category": poi.category,
+                    "information": poi.information,
+                    "photo": poi.photos.first().photo_thumb.url,
+                })
+            else:
+                poi_info.append({
+                    "name": poi.name,
+                    "pk": poi.pk,
+                    "longitude": poi.longitude,
+                    "latitude": poi.latitude,
+                    "category": poi.category,
+                    "information": poi.information,
+                    "photo": "https://images.unsplash.com/photo-1527594488302-1c63bc6490b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+                })
 
     return render(request, "home.html", {
         'mapbox_access_token': mapbox_access_token,
@@ -174,26 +197,51 @@ def daytrip_detail(request, daytrip_pk):
     pointsofinterest = Pointofinterest.objects.for_user(request.user)
     logs = daytrip.logs.all()
     mapbox_access_token = env("MAPBOX_KEY")
-    for route in routes:
-        route_info.append({
-            "name": route.name,
-            "pk": route.pk,
-            "longitude": route.longitude,
-            "latitude": route.latitude,
-            "route_type": route.route_type,
-            "rating": route.rating,
-        })
+    if routes is not None:
+        for route in routes:
+            if route.photos.first():
+                route_info.append({
+                    "name": route.name,
+                    "pk": route.pk,
+                    "longitude": route.longitude,
+                    "latitude": route.latitude,
+                    "route_type": route.route_type,
+                    "rating": route.rating,
+                    "photo": route.photos.first().photo_thumb.url,
+                })
+            else:
+                route_info.append({
+                    "name": route.name,
+                    "pk": route.pk,
+                    "longitude": route.longitude,
+                    "latitude": route.latitude,
+                    "route_type": route.route_type,
+                    "rating": route.rating,
+                    "photo": "https://images.unsplash.com/photo-1578763397601-ad069af37f14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1056&q=80",
+                })
+
     if pointsofinterest is not None:
         for poi in pointsofinterest:
-            poi_info.append({
-                "name": poi.name,
-                "pk": poi.pk,
-                "longitude": poi.longitude,
-                "latitude": poi.latitude,
-                "category": poi.category,
-                "information": poi.information,
-
-            })
+            if poi.photos.first():
+                poi_info.append({
+                    "name": poi.name,
+                    "pk": poi.pk,
+                    "longitude": poi.longitude,
+                    "latitude": poi.latitude,
+                    "category": poi.category,
+                    "information": poi.information,
+                    "photo": poi.photos.first().photo_thumb.url,
+                })
+            else:
+                poi_info.append({
+                    "name": poi.name,
+                    "pk": poi.pk,
+                    "longitude": poi.longitude,
+                    "latitude": poi.latitude,
+                    "category": poi.category,
+                    "information": poi.information,
+                    "photo": "https://images.unsplash.com/photo-1527594488302-1c63bc6490b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+                })
     return render(request, "climbguide/daytrip_detail.html", {
         "daytrip": daytrip,
         "owners": owners,
@@ -253,26 +301,49 @@ def edit_daytrip(request, daytrip_pk):
 
     if routes is not None:
         for route in routes:
-            route_info.append({
-                "name": route.name,
-                "pk": route.pk,
-                "longitude": route.longitude,
-                "latitude": route.latitude,
-                "route_type": route.route_type,
-                "rating": route.rating,
-            })
-    
+            if route.photos.first():
+                route_info.append({
+                    "name": route.name,
+                    "pk": route.pk,
+                    "longitude": route.longitude,
+                    "latitude": route.latitude,
+                    "route_type": route.route_type,
+                    "rating": route.rating,
+                    "photo": route.photos.first().photo_thumb.url,
+                })
+            else:
+                route_info.append({
+                    "name": route.name,
+                    "pk": route.pk,
+                    "longitude": route.longitude,
+                    "latitude": route.latitude,
+                    "route_type": route.route_type,
+                    "rating": route.rating,
+                    "photo": "https://images.unsplash.com/photo-1578763397601-ad069af37f14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1056&q=80",
+                })
+
     if pointsofinterest is not None:
         for poi in pointsofinterest:
-            poi_info.append({
-                "name": poi.name,
-                "pk": poi.pk,
-                "longitude": poi.longitude,
-                "latitude": poi.latitude,
-                "category": poi.category,
-                "information": poi.information,
-
-            })
+            if poi.photos.first():
+                poi_info.append({
+                    "name": poi.name,
+                    "pk": poi.pk,
+                    "longitude": poi.longitude,
+                    "latitude": poi.latitude,
+                    "category": poi.category,
+                    "information": poi.information,
+                    "photo": poi.photos.first().photo_thumb.url,
+                })
+            else:
+                poi_info.append({
+                    "name": poi.name,
+                    "pk": poi.pk,
+                    "longitude": poi.longitude,
+                    "latitude": poi.latitude,
+                    "category": poi.category,
+                    "information": poi.information,
+                    "photo": "https://images.unsplash.com/photo-1527594488302-1c63bc6490b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+                })
 
     if request.method == "GET":
         form = DaytripForm(instance=daytrip)
