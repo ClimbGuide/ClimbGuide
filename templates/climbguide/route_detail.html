@@ -5,7 +5,7 @@
 {% for photo in photos %}
 <img src="{{ photo.photo_thumb.url }}"/>
 {% empty %}
-<div>This route has no photos</div><br>
+<img src="https://images.unsplash.com/photo-1578763397601-ad069af37f14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1056&q=80">
 {% endfor %}
 <div>
     {{ route.route_type }} | {{ route.rating }}<br>

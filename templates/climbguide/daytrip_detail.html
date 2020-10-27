@@ -88,12 +88,12 @@
     var latitudeList = []
     var longitudeList = []
 
-    // Poi Popus Creation not used in bouding
+    // Poi Popus Creation
     for (let i = 0; i < poi_info.length; i++) {
         let poi = poi_info[i]
         console.log(poi.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
+                <img src="${poi.photo}" class="db" alt="Photo of a point of interest" />
                 <div class="pa2 bt b--black-20">
                 <p class="f6 dark-blue mv1">${poi.name}</p>
                 <p class="f6 gray mv1">${poi.category}</p>
@@ -123,9 +123,9 @@
         longitudeList.push(route.longitude)
         console.log(route.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src="https://scontent.flhr3-1.fna.fbcdn.net/v/t1.0-1/p320x320/10419949_10105372167674736_5929675618317299881_n.jpg?oh=fa3bbf4311e61e4637b67ef3be89479f&oe=58C28705" class="db" alt="Photo of Route" />
+                <img src=${route.photo} class="db" alt="Photo of a route">
                 <div class="pa2 bt b--black-20">
-                    <p class="f6 dark-blue mv1">${route.name}</p>
+                <p class="f6 dark-blue mv1">${route.name}</p>
                 <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
                 <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
                 </div>
