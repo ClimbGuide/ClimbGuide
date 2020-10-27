@@ -3,7 +3,7 @@
 <div>
     <form class="form-style" action="{% url 'home' %}" method="GET">
         <div>
-            <label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas">
+            <label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climbing Areas">
         </div>
         <div>
             <label for="id_route_type">Route Type</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 window.addEventListener('load', (e) => {
         map.fitBounds([
             [(minLongitude - 0.05), (minLatitude - 0.1)],
-            [(maxLongitude + 0.1), (maxLatitude + 0.1)]
+            [(maxLongitude + 0.1), (maxLatitude + 0.3)]
         ])
         console.log("bounds updated!")
     })
