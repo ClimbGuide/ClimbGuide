@@ -77,7 +77,7 @@
         <ul id="container1" class="list pl0 ml0 center mw5 ba b--light-silver br3">
             {% for route in routes %}
                 {% if route not in planned_routes %}
-                <li data-routeid="{{ route.id }}" class="ph3 pv2 bb b--light-silver">
+                <li data-routeid="{{ route.id }}" class=" unplanned ph3 pv2 bb b--light-silver">
                     {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
                 </li>
                 {% endif %}
@@ -179,13 +179,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
         latitudeList.push(route.latitude)
         longitudeList.push(route.longitude)
         console.log(route.name)
-        var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src=${route.photo} class="db" alt="Photo of a route">
-                <div class="pa2 bt b--black-20">
-                <p class="f6 dark-blue mv1">${route.name}</p>
-                <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
-                </div>
+        var html =  `<article class="hide-child relative ba b--black-20 mw5 center route-pop-up">
+                        <img src=${route.photo} class="db" alt="Photo of a route">
+                        <a class="f6 db link dark-blue hover-blue" href="/routes/detail/${route.pk}">${route.name}</a>
+                        <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
+                        <a data-idroute = "${route.pk}" class="add-route-button link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="#">Add route to trip!</a>
                 </article>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
@@ -212,6 +210,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
     console.log(maxLongitude)
     console.log(maxLatitude)
 })
+
 // Bound mapbox after page loads, based on queried data
 window.addEventListener('load', (e) => {
         map.fitBounds([
@@ -220,6 +219,7 @@ window.addEventListener('load', (e) => {
         ])
         console.log("bounds updated!")
     })
+
 // Dragula functionality 
 dragula([
     document.querySelector('#container1'),
@@ -236,6 +236,7 @@ dragula([
         console.log("route id set to planned")
     }
 })
+
 // Send array of planned routes to the backend
 var sendRoutesButton = document.querySelector("#send-routes-button")
 var plannedRoutesContainer = document.querySelector("#container2")
@@ -282,5 +283,30 @@ var sendRoutePks = function (jsonObj) {
     .then(data => console.log(data))
 }
 
+// Add Routes via Mapbox
+const mapBox = document.querySelector("#map")
+const AddRouteButton = document.querySelector(".add-route-button")
+
+mapBox.addEventListener("DOMNodeInserted", function(event) {
+    console.log("change event")
+    mapBox.querySelectorAll(".add-route-button").forEach(item => {
+        item.addEventListener("click", function (event) {
+            console.log("clicked!")
+            route_pk = item.dataset.idroute
+            console.log(route_pk)
+            document.querySelector("#container1").querySelectorAll(".unplanned").forEach(item => {
+                let pk = item.dataset.routeid
+                console.log(pk)
+                if (pk === route_pk) {
+                    console.log(`We are both ${pk}`)
+                    item.id = "plannedRoute"
+                    document.querySelector("#container2").appendChild(item)
+                    console.log("appended!")
+
+                }
+            })
+        })
+    })
+})
 </script>
 {% endblock %}
