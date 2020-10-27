@@ -5,6 +5,7 @@ from django.contrib.postgres.search import SearchVector
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+from allauth.account.views import LoginView, SignupView, LogoutView
 import json
 import environ
 
@@ -510,3 +511,6 @@ def addlocation_to_pointofinterest(request, pointofinterest_pk):
     return render(request, "climbguide/add_poi_location.html", {
         "form": form
     })
+
+class AccountSignupView(SignupView):
+    template = "accounts/custom_signup.html"
