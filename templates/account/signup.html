@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div>
+<h1>{% trans "Sign Up" %}</h1>
+
+
+<form class="form-style" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  <div> <div><label for="id_username">Username:</label></div>
+  <div>{{ form.username }}</div>
+  <div><label for="id_email">Email:</label></div>
+  <div>{{ form.email }}
+  </div>
+  <div><label for="id_bio">Write your Bio here:</label></div>
+  <div>{{ form.bio }} 
+  </div>
+  <div><label for="id_photo">Add a Profile Picture:</label></div>
+  <div>{{ form.photo }}
+  </div>
+  <div><label for="id_password1">Password:</label></div>
+   <div> {{ form.password1 }}
+  </div><div><label for="id_password2">Confirm Password:</label></div>
+    <div>{{ form.password2 }}
+    </div>
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0" type="submit">{% trans "Sign Up" %} &raquo;</button>
+</form>
+</div>
+
+{% endblock %}

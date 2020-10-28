@@ -69,7 +69,7 @@ var maxLatitude
 mapboxgl.accessToken = '{{mapbox_access_token}}';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'mapbox://styles/belongarobert/ckgst20nd1x2k19l67uabg18l',
     center: [-80.793457, 35.782169],
     zoom: 4,
 })
@@ -102,7 +102,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
     for (let i = 0; i < poi_info.length; i++) {
         let poi = poi_info[i]
         console.log(poi.name)
-        var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
+        var html =  `<div id="pop-up">
+        <article class="hide-child relative ba b--black-20 mw5 center">
                 <img src="${poi.photo}" class="db" alt="Photo of a point of interest" />
                 <div class="pa2 bt b--black-20">
                 <p class="f6 dark-blue mv1">${poi.name}</p>
@@ -110,7 +111,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
                 <p class="f6 gray mv1">${poi.information}</p>
                 <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
                 </div>
-                </article>`
+                </article>
+                </div>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
             offset: { "bottom" : [0, -10]},
