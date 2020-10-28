@@ -80,7 +80,7 @@ def home(request):
                     "pk": poi.pk,
                     "longitude": poi.longitude,
                     "latitude": poi.latitude,
-                    "category": poi.category,
+                    "category": poi.get_category_display(),
                     "information": poi.information,
                     "photo": poi.photos.first().photo_thumb.url,
                 })
@@ -90,7 +90,7 @@ def home(request):
                     "pk": poi.pk,
                     "longitude": poi.longitude,
                     "latitude": poi.latitude,
-                    "category": poi.category,
+                    "category": poi.get_category_display(),
                     "information": poi.information,
                     "photo": "https://images.unsplash.com/photo-1527594488302-1c63bc6490b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
                 })
@@ -229,7 +229,7 @@ def daytrip_detail(request, daytrip_pk):
                     "pk": poi.pk,
                     "longitude": poi.longitude,
                     "latitude": poi.latitude,
-                    "category": poi.category,
+                    "category": poi.get_category_display(),
                     "information": poi.information,
                     "photo": poi.photos.first().photo_thumb.url,
                 })
@@ -239,7 +239,7 @@ def daytrip_detail(request, daytrip_pk):
                     "pk": poi.pk,
                     "longitude": poi.longitude,
                     "latitude": poi.latitude,
-                    "category": poi.category,
+                    "category": poi.get_category_display(),
                     "information": poi.information,
                     "photo": "https://images.unsplash.com/photo-1527594488302-1c63bc6490b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
                 })
@@ -331,7 +331,7 @@ def edit_daytrip(request, daytrip_pk):
                     "pk": poi.pk,
                     "longitude": poi.longitude,
                     "latitude": poi.latitude,
-                    "category": poi.category,
+                    "category": poi.get_category_display(),
                     "information": poi.information,
                     "photo": poi.photos.first().photo_thumb.url,
                 })
@@ -341,7 +341,7 @@ def edit_daytrip(request, daytrip_pk):
                     "pk": poi.pk,
                     "longitude": poi.longitude,
                     "latitude": poi.latitude,
-                    "category": poi.category,
+                    "category": poi.get_category_display(),
                     "information": poi.information,
                     "photo": "https://images.unsplash.com/photo-1527594488302-1c63bc6490b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
                 })
