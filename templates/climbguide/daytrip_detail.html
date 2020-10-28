@@ -26,11 +26,11 @@
         {% endfor %}
         </ul>
     </div>
-    <div class="flex-column">
-        <h3 class="f4 bold center mw5">Log</h3>
-        <div class="center"><button id="button-one" class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green">Write Log Entry</button></div>
+    <div class="flex-column center-form">
+        <h3 class="f4 center bold mw5">Log</h3>
+        <div><button id="button-one" class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green">Write Log Entry</button></div>
         <div id="form-one" class="hidden">
-            <form id="daytrip-log-form" data-daytripid="{{ daytrip.id }}" class="form-style">
+            <form id="daytrip-log-form" data-daytripid="{{ daytrip.id }}" class="form-style-two">
                 <div>
                     <label for="log-input">Log Entry</label>
                     <textarea id="log-input" placeholder="Write about your trip!"></textarea>
