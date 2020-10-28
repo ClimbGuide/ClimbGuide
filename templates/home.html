@@ -50,7 +50,7 @@
     <h2 class="f4 bold center mw5">Routes</h2>
     <ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
     {% for route in routes %}
-        <a href="{% url 'route_detail' route_pk=route.pk %}" class="link black"><li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }}</li></a>
+        <a href="{% url 'route_detail' route_pk=route.pk %}" class="link black"><li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li></a>
     {% empty %}
         <li class="ph3 pv2 bb b--light-silver">Sorry, no routes are available for that search.</li>
     {% endfor %}

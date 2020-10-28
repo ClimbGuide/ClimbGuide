@@ -172,9 +172,6 @@ MEDIA_URL = "/media/"
 # Custom user model
 
 AUTH_USER_MODEL = 'users.User'
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'
 
 # Debug toolbar config
 

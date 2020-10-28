@@ -24,7 +24,7 @@ from climbguide import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # user URLS
-    path('account/profile/', user_views.profile, name="profile"),
+    path('accounts/profile/', user_views.profile, name="profile"),
     path("accounts/", include("allauth.urls")),
     # climbguide URLS
     path('', views.home, name='home'),

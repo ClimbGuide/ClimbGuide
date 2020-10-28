@@ -23,13 +23,13 @@
     </div>
 </div>
 
-<div class="flex-container">
+<div class="flex-container center-form">
     <div id="profile-column-left">
         <h2 class="f5 f4-ns center mb0 black-90">{{ user }}</h2>
         {% if user.photo %}
-            <img src="{{ user.photo_thumb.url }}" class="br-100 pa1 ba b--black-10" alt="avatar"/>
+            <img src="{{ user.photo_thumb.url }}" alt="user's profile picture"/>
         {% else %}
-        <div><img src="https://images.unsplash.com/photo-1558537112-ed307f81124c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"/></div><br>
+            <img src="https://images.unsplash.com/photo-1558537112-ed307f81124c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" alt="default profile picture"/>
         {% endif %}
         <p class="f4 bold center mw5">{{ user.bio }}</p>
         <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="button-one">Edit User Info</button>
@@ -54,9 +54,7 @@
                 </a>
             </article>
             {% empty %}
-            <article class="fl w-100 w-50-m  w-25-ns pa2-ns">
-                <h3 class="f5 f4-ns mb0 black-90">No trips planned yet!</h3>
-            </article>
+            <p>No trips planned yet!</p>
             {% endfor %}
         </section>
 
