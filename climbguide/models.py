@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 from mapbox_location_field.models import LocationField, AddressAutoHiddenField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, ResizeToFit
@@ -56,7 +56,18 @@ class Pointofinterest(models.Model):
 class Location(models.Model):
     location = LocationField(map_attrs={"style":"mapbox://styles/mapbox/streets-v11","center": (-80.793457, 35.782169),"zoom":5})
 
+
+class DaytripQuerySet(models.QuerySet):
+    def count_routes(self):
+        daytrips = self.annotate(
+            num_routes=Count("routes", distinct=True)
+        )
+        return daytrips
+
+
 class Daytrip(models.Model):
+    objects = DaytripQuerySet.as_manager()
+
     title = models.CharField(max_length=100, null=False, blank=False)
     description = models.CharField(max_length=200, null=True, blank=True)
     owners = models.ManyToManyField(to=User, related_name="daytrips", blank=True)

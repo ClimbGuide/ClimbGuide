@@ -1,33 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h2>Update {{ daytrip.title }}</h2>
-<div>
-    {{ daytrip.date }}<br>
-    {{ daytrip.description }}<br>
-</div><br>
-<div>
-    <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit"id="button-one">Update Trip Information</button>
-    <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green"type="submit">Delete Trip</button></a>
-    <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green"type="submit">Cancel Update</button></a>
+<div class="center-form">
+    <h2>Update {{ daytrip.title }}</h2>
+    <div>
+        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit"id="button-one">Update Trip Information</button>
+        <a href="{% url 'delete_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green"type="submit">Delete Trip</button></a>
+        <a href="{% url 'daytrip_detail' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green"type="submit">Cancel Update</button></a>
+    </div>
+    <div id="form-one" class="hidden">
+        <form class="form-style" action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div>
+                <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Trip</button>
+                <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Cancel Update</button></a> 
+            </div>
+        </form>
+    </div>
+    <p>Search for routes below!<br>
+       After searching, use the map to add routes or drag routes from the routes column to your trip column.</p>
 </div>
-<div id="form-one" class="hidden">
-    <form class="form-style" action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div>
-            <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" href="#0"type="submit">Update Trip</button>
-           <a href="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Cancel Update</button></a> 
-        </div>
-    </form>
-</div>
-
-<div>
+<div class="center-form">
     <form class="form-style" action="{% url 'edit_daytrip' daytrip_pk=daytrip.pk %}" method="GET">
         <div>
-            <label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas">
-        </div>
-        <div>
+            <label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climbing Areas">
             <label for="id_route_type">Route Type</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
             <option value="" selected>--</option>
             <option value="trad">trad</option>
@@ -69,8 +66,8 @@
     </form>
 </div>
 
-<div id='map' style='width: 500px; height: 450px;'></div>
-<p>Drag over routes to add them to your trip!</p>
+<div id='map' style='width: 800px; height: 450px;'></div>
+<p class="center-form">Drag routes from the routes list to your trip's list to add them!</p>
 <div class="flex-container">
     <div class="flex-column">
         <h3 class="f4 bold center mw5">Routes</h3>
@@ -82,7 +79,7 @@
                 </li>
                 {% endif %}
             {% empty %}
-                <li class="ph3 pv2 bb b--light-silver">Search for routes!</li>
+                <li class="ph3 pv2 bb b--light-silver">Sorry, no routes are available for that search.</li>
             {% endfor %}
         </ul>
     </div>
@@ -94,10 +91,10 @@
                     {{ route.name }} | {{ route.route_type }} | {{ route.rating }}
                 </li>
                 {% empty %}
-                <li class="ph3 pv2 bb b--light-silver">Add a Route</li>
+                <li class="ph3 pv2 bb b--light-silver">No routes planned yet!</li>
                 {% endfor %}
             </ul>
-        <div><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="send-routes-button">Sumbit New Route List</button></div>
+        <div class="center"><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="send-routes-button">Submit New Route List</button></div>
     </div>  
 </div>
 
@@ -116,7 +113,7 @@ var maxLatitude
 mapboxgl.accessToken = '{{mapbox_access_token}}';
 var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'mapbox://styles/belongarobert/ckgst20nd1x2k19l67uabg18l',
     center: [-80.793457, 35.782169],
     zoom: 4,
 })
@@ -150,14 +147,13 @@ document.addEventListener("DOMContentLoaded", (e) => {
         let poi = poi_info[i]
         console.log(poi.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src="${poi.photo}" class="db" alt="Photo of a point of interest" />
-                <div class="pa2 bt b--black-20">
-                <p class="f6 dark-blue mv1">${poi.name}</p>
-                <p class="f6 gray mv1">${poi.category}</p>
-                <p class="f6 gray mv1">${poi.information}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
-                </div>
-                </article>`
+                        <div class="pa2 bt b--black-20">
+                            <p class="f6 dark-blue mv1">${poi.name}</p>
+                            <p class="f6 gray mv1">${poi.category}</p>
+                            <p class="f6 gray mv1">${poi.information}</p>
+                            <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
+                        </div>
+                    </article>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
             offset: { "bottom" : [0, -10]},
@@ -180,20 +176,28 @@ document.addEventListener("DOMContentLoaded", (e) => {
         longitudeList.push(route.longitude)
         console.log(route.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center route-pop-up">
-                        <img src=${route.photo} class="db" alt="Photo of a route">
                         <a class="f6 db link dark-blue hover-blue" href="/routes/detail/${route.pk}">${route.name}</a>
                         <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
                         <a data-idroute = "${route.pk}" class="add-route-button link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="#">Add route to trip!</a>
-                </article>`
+                    </article>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
             offset: { "bottom" : [0, -10]},
             closeOnClick: false
         }).setHTML(html);
 
-        let color = "green"
+        route.color = "green"
+        for (let item of plannedRoutesContainer.querySelectorAll("#plannedRoute")) {
+            let plannedPk = item.dataset.routeid
+            if (route.pk == plannedPk) {
+                console.log("here")
+                route.color = "red"
+            } else {
+                console.log("actually I'm here")
+            }
+        }
         var marker = new mapboxgl.Marker(
-            {color: color}
+            {color: route.color}
         )
             .setLngLat([route.longitude, route.latitude])
             .setPopup(customPopUp)

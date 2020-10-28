@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
+<div class="center-form">
     <form class="form-style" action="{% url 'home' %}" method="GET">
         <div>
-            <label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climing Areas">
-        </div>
-        <div>
+            <label for="id_location">Route Location</label> <input type="search" name="location" required id="id_location" value="{{ location_q }}" placeholder="Search Climbing Areas">
             <label for="id_route_type">Route Type</label> <select name="route_type" id="id_route_type" value="{{ route_type_q }}">
             <option value="" selected>--</option>
             <option value="trad">trad</option>
@@ -47,14 +45,18 @@
     </form>
 </div>
 <div id='map' style='width: 800px; height: 450px;'></div>
-<h2 class="f4 bold center mw5">Routes</h2>
-<ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
+
+<div class="center-form">
+    <h2 class="f4 bold center mw5">Routes</h2>
+    <ul class="list pl0 ml0 center mw5 ba b--light-silver br3">
     {% for route in routes %}
-        <li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }}</li>
+        <a href="{% url 'route_detail' route_pk=route.pk %}" class="link black"><li class="ph3 pv2 bb b--light-silver">{{ route.name }} | {{ route.route_type }} | {{ route.rating }}</li></a>
     {% empty %}
-        <li class="ph3 pv2 bb b--light-silver">Sorry, no availble routes for that search.</li>
+        <li class="ph3 pv2 bb b--light-silver">Sorry, no routes are available for that search.</li>
     {% endfor %}
-</ul>
+    </ul>
+</div>
+
 
 {{ route_info|json_script:"route_info" }}
 {{ poi_info|json_script:"poi_info" }}
@@ -102,17 +104,14 @@ document.addEventListener("DOMContentLoaded", (e) => {
     for (let i = 0; i < poi_info.length; i++) {
         let poi = poi_info[i]
         console.log(poi.name)
-        var html =  `<div id="pop-up">
-        <article class="hide-child relative ba b--black-20 mw5 center">
-                <img src="${poi.photo}" class="db" alt="Photo of a point of interest" />
-                <div class="pa2 bt b--black-20">
-                <p class="f6 dark-blue mv1">${poi.name}</p>
-                <p class="f6 gray mv1">${poi.category}</p>
-                <p class="f6 gray mv1">${poi.information}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
-                </div>
-                </article>
-                </div>`
+        var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
+                        <div class="pa2 bt b--black-20">
+                            <p class="f6 dark-blue mv1">${poi.name}</p>
+                            <p class="f6 gray mv1">${poi.category}</p>
+                            <p class="f6 gray mv1">${poi.information}</p>
+                            <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/pointsofinterest/detail/${poi.pk}">See this Point of Interest!</a>
+                        </div>
+                    </article>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
             offset: { "bottom" : [0, -10]},
@@ -135,13 +134,12 @@ document.addEventListener("DOMContentLoaded", (e) => {
         longitudeList.push(route.longitude)
         console.log(route.name)
         var html =  `<article class="hide-child relative ba b--black-20 mw5 center">
-                <img src=${route.photo} class="db" alt="Photo of a route">
-                <div class="pa2 bt b--black-20">
-                <p class="f6 dark-blue mv1">${route.name}</p>
-                <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
-                <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
-                </div>
-                </article>`
+                        <div class="pa2 bt b--black-20">
+                            <p class="f6 dark-blue mv1">${route.name}</p>
+                            <p class="f6 gray mv1">${route.route_type} | ${route.rating}</p>
+                            <a class="link tc ph3 pv1 db bg-animate bg-dark-blue hover-bg-blue white f6 br1" href="/routes/detail/${route.pk}">See this Route!</a>
+                        </div>
+                    </article>`
         var customPopUp = new mapboxgl.Popup({
             anchor: "bottom",
             offset: { "bottom" : [0, -10]},
@@ -171,7 +169,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 window.addEventListener('load', (e) => {
         map.fitBounds([
             [(minLongitude - 0.05), (minLatitude - 0.1)],
-            [(maxLongitude + 0.1), (maxLatitude + 0.1)]
+            [(maxLongitude + 0.1), (maxLatitude + 0.3)]
         ])
         console.log("bounds updated!")
     })

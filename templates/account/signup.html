@@ -12,21 +12,17 @@
 <form class="form-style" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
   <div> <div><label for="id_username">Username:</label></div>
-  <div>{{ form.username }}</div>
+  <div>{{ form.username }}</div><br>
   <div><label for="id_email">Email:</label></div>
-  <div>{{ form.email }}
-  </div>
+  <div>{{ form.email }}</div><br>
   <div><label for="id_bio">Write your Bio here:</label></div>
-  <div>{{ form.bio }} 
-  </div>
+  <div>{{ form.bio }} </div><br>
   <div><label for="id_photo">Add a Profile Picture:</label></div>
-  <div>{{ form.photo }}
-  </div>
+  <div>{{ form.photo }}</div><br>
   <div><label for="id_password1">Password:</label></div>
-   <div> {{ form.password1 }}
-  </div><div><label for="id_password2">Confirm Password:</label></div>
-    <div>{{ form.password2 }}
-    </div>
+   <div> {{ form.password1 }}</div><br>
+   <div><label for="id_password2">Confirm Password:</label></div>
+  <div>{{ form.password2 }}</div><br>
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}

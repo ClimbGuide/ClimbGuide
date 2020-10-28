@@ -12,7 +12,7 @@ from climbguide.forms import DaytripForm, PointofinterestForm
 @login_required
 def profile(request):
     user = request.user
-    daytrips = user.daytrips.all()
+    daytrips = user.daytrips.all().count_routes()
     if request.method == "GET":
         form = UpdateUserForm(instance=user)
     else:
