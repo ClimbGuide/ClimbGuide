@@ -5,25 +5,27 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<div class="accounts">
+<div>
 <h1>{% trans "Sign Up" %}</h1>
 
 
-<form ALIGN='center' class="signup form-style" id="signup_form" method="post" action="{% url 'account_signup' %}">
+<form class="form-style" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
-  <div> <label for="id_username">Username:</label>
-  {{ form.username }}</div>
-  <div><label for="id_email">Email:</label>{{ form.email }}
+  <div> <div><label for="id_username">Username:</label></div>
+  <div>{{ form.username }}</div>
+  <div><label for="id_email">Email:</label></div>
+  <div>{{ form.email }}
   </div>
-  <div><label for="id_bio">Write your Bio here:</label>
-  {{ form.bio }} 
+  <div><label for="id_bio">Write your Bio here:</label></div>
+  <div>{{ form.bio }} 
   </div>
-  <div><label for="id_photo">Add a Profile Picture:</label>{{ form.photo }}
+  <div><label for="id_photo">Add a Profile Picture:</label></div>
+  <div>{{ form.photo }}
   </div>
-  <div><label for="id_password1">Password:</label>
-    {{ form.password1 }}
-  </div><div><label for="id_password2">Confirm Password:</label>
-    {{ form.password2 }}
+  <div><label for="id_password1">Password:</label></div>
+   <div> {{ form.password1 }}
+  </div><div><label for="id_password2">Confirm Password:</label></div>
+    <div>{{ form.password2 }}
     </div>
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
