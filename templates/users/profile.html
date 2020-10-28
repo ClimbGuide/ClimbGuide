@@ -32,9 +32,9 @@
             <img src="https://images.unsplash.com/photo-1558537112-ed307f81124c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" alt="default profile picture"/>
         {% endif %}
         <p class="f4 bold center mw5">{{ user.bio }}</p>
-        <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="button-one">Edit User Info</button>
+        <div><button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit" id="button-one">Edit User Info</button></div>
         <div id="form-one" class="hidden">
-            <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+            <form action ="{% url 'profile' %}" method="POST" enctype="multipart/form-data" class="form-style-two">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green" type="submit">Update Profile</button>

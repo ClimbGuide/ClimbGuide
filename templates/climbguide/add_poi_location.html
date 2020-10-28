@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<body>
-<form class="form-style" method="post">
+<body class="center-form">
+<form method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="submit">
+    <input type="submit" value="submit"class="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-dark-green">
 </form>
 </body>
 {{ form.media }}
