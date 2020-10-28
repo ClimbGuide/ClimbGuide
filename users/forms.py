@@ -3,7 +3,7 @@ from django import forms
 from .models import User
 
 class CustomSignUpForm(SignupForm):
-    bio = forms.CharField(max_length=200, label="Bio", required=False)
+    bio = forms.CharField(max_length=200, initial="Write your Bio here!", label="Bio", required=False)
     photo = forms.ImageField(required=False)
     def save(self, request):
         user = super().save(request)
