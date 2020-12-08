@@ -23,6 +23,7 @@ django-mapbox-location-field = "*"
 boto3 = "*"
 django-storages = "*"
 djangorestframework = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.8"
