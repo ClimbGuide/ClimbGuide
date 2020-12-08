@@ -22,6 +22,7 @@ django-location-field = "*"
 django-mapbox-location-field = "*"
 boto3 = "*"
 django-storages = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.8"

@@ -53,10 +53,12 @@ INSTALLED_APPS = [
     'mapbox_location_field',
     'imagekit',
     'storages',
+    'rest_framework',
 
     # Project-specific
     'users',
     'climbguide',
+    'api',
 
     #all-auth
     'allauth',
@@ -180,6 +182,17 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
+
+#Django Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+}
 
 # AWS Configuration
 if env("USE_S3") == True:
