@@ -20,12 +20,14 @@ from django.conf.urls.static import static
 
 from users import views as user_views
 from climbguide import views
+from api import views as api_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # user URLS
     path('accounts/profile/', user_views.profile, name="profile"),
     path("accounts/", include("allauth.urls")),
+    path('api-auth/', include('rest_framework.urls')),
     # climbguide URLS
     path('', views.home, name='home'),
     path('search/', views.search, name="search"),
@@ -50,7 +52,10 @@ urlpatterns = [
     path('pointsofinterest/delete/<int:pointofinterest_pk>', views.delete_pointofinterest, name="delete_pointofinterest"),
     path('pointsofinterest/detail/<int:pointofinterest_pk>/addphoto/', views.addphoto_to_pointofinterest, name="addphoto_to_pointofinterest"),
     path('pointsofinterest/detail/<int:pointofinterest_pk>/addlocation/',views.addlocation_to_pointofinterest, name="add_poi_location"),    
-
+# API URLS
+    path("api/routes/", api_views.RouteSearchView.as_view()),
+    path("api/daytrips/", api_views.DaytripListCreateView.as_view()),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
