@@ -23,3 +23,12 @@ class RouteSearchView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["route_type", "rating"]
         
+class DaytripListCreateView(generics.ListCreateAPIView):
+    serializer_class = DaytripSerializer
+
+    def get_queryset(self):
+        return self.request.user.daytrips.all()
+    
+    def perform_create(self, serializer):
+        daytrip = serializer.save()
+        daytrip.owners.add(self.request.user)
