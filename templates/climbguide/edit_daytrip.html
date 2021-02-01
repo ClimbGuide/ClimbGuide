@@ -276,8 +276,6 @@ var makeRouteObject = function (route) {
     }
 }
 
-const user_token = "{{token}}"
-
 var sendRoutePks = function (jsonObj) {
     const daytrip_pk = container2.dataset.daytripid
     const url = `/api/daytrips/${daytrip_pk}/updateroutes/`
@@ -287,7 +285,7 @@ var sendRoutePks = function (jsonObj) {
         headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             'Accept': 'application/json; charset=UTF-8',
-            'Authorization': `Token ${user_token}`
+            'Authorization': 'Token ' + '{{token}}'
         }
     })
     .then(res => res.json())
