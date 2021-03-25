@@ -52,3 +52,23 @@ class UpdateDaytripRoutesView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# Log Views
+class LogCreateView(APIView):
+    def post(self, request, daytrip_pk):
+        daytrip = get_object_or_404(request.user.daytrips, pk=daytrip_pk)
+        serializer = DaytripSerializer(instance=daytrip)
+        if request.user in daytrip.owners.all():
+            json_log = json.loads(request.body)
+            log_text = json_log["log"]
+            Log.objects.create(
+                text=log_text,
+                owner=request.user,
+                daytrip=daytrip
+            )
+            if serializer.is_valid:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
+        
+

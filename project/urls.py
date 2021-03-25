@@ -56,6 +56,7 @@ urlpatterns = [
     path("api/routes/", api_views.RouteSearchView.as_view()),
     path("api/daytrips/", api_views.DaytripListCreateView.as_view()),
     path("api/daytrips/<int:daytrip_pk>/updateroutes/", api_views.UpdateDaytripRoutesView.as_view()),
+    path("api/daytrips/<int:daytrip_pk>/addlog/", api_views.LogCreateView.as_view()),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

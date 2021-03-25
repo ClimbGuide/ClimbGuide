@@ -280,6 +280,7 @@ def edit_daytrip(request, daytrip_pk):
     location_q = request.GET.get("location","")
     route_type_q = request.GET.get("route_type","")
     rating_q = request.GET.get("rating", "")
+    token = request.user.auth_token
     
     if location_q is not None and route_type_q != "" and rating_q != "":
         routes = Route.objects.annotate(
@@ -362,7 +363,8 @@ def edit_daytrip(request, daytrip_pk):
         "planned_pointofinterest": planned_pointofinterest,
         "route_info": route_info,
         "poi_info": poi_info,
-        "mapbox_access_token": mapbox_access_token
+        "mapbox_access_token": mapbox_access_token,
+        "token": token
     })
 
 
