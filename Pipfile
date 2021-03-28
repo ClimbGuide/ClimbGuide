@@ -1,29 +1,28 @@
 [[source]]
-name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-
-[dev-packages]
-prospector = "*"
+name = "pypi"
 
 [packages]
 django = "*"
 django-extensions = "*"
 django-debug-toolbar = "*"
-werkzeug = "*"
 django-environ = "*"
 psycopg2 = "*"
 django-heroku = "*"
 gunicorn = "*"
+werkzeug = "*"
 pillow = "*"
 django-imagekit = "*"
 django-allauth = "*"
-django-location-field = "*"
-django-mapbox-location-field = "*"
 boto3 = "*"
 django-storages = "*"
 djangorestframework = "*"
 django-filter = "*"
+django-mapbox-location-field = "*"
+django-cors-headers = "*"
+
+[dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
